@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>create table book_genre</comment>
+        <sql>
+            create table book_genre
+            (
+                book_id  int not null,
+                genre_id int not null,
+                primary key (book_id, genre_id),
+                constraint book_genre_book_id_fk
+                    foreign key (book_id) references book (id),
+                constraint book_genre_genre_id_fk
+                    foreign key (genre_id) references genre (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

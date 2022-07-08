@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>add genre data</comment>
+        <sql>
+            insert into genre(name, description) values
+                ('Thriller', 'Description of Thriller genre');
+            insert into genre(name, description) values
+                ('Lyrics', 'Description of Lyrics genre');
+            insert into genre(name, description) values
+                ('Fantasy', 'Description of Fantasy genre')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

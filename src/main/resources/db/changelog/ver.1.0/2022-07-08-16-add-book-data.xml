@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>add book data</comment>
+        <sql>
+            insert into book(title, language, summary, receipt_date, year_of_publishing, publisher_id) values
+                ('Spooky', 'English', 'Book about something mystic','2022-07-01', '1950', '1');
+            insert into book(title, language, summary, receipt_date, year_of_publishing, publisher_id) values
+                ('Hello world!', 'English', 'Book about something interesting','2022-07-02', '1995', '2');
+            insert into book(title, language, summary, receipt_date, year_of_publishing, publisher_id) values
+                ('All right', 'Belarusian', 'Book about something difficult','2022-07-03', '2022', '3')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

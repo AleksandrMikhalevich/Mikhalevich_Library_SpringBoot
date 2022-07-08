@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>create table book_author</comment>
+        <sql>
+            create table book_author
+            (
+                book_id   int not null,
+                author_id int not null,
+                primary key (book_id, author_id),
+                constraint book_author_author_id_fk
+                    foreign key (author_id) references author (id),
+                constraint book_author_book_id_fk
+                    foreign key (book_id) references book (id)
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

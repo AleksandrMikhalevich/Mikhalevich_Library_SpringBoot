@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>add library_user data</comment>
+        <sql>
+            insert into library_user(login, password, email) values
+                ('user', '$2y$10$YRdbBOENtL7b7/vBjHquye6KmVeOSOKVi4uM19PrEBZO6t9MKNSUC','user_22@library.org');
+            insert into library_user(login, password, email) values
+                ('admin', '$2y$10$lliha47gnrrJeCImZT7CwONoJ8y4MMe1QaTlPJA7Otq5CA48hCway','admin_22@library.org')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

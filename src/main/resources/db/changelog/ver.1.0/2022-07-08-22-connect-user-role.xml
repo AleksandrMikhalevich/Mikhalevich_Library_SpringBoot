@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>set user_role data</comment>
+        <sql>
+            insert into user_role(user_id, role_id) values
+                ('1', '1');
+            insert into user_role(user_id, role_id) values
+                ('2', '2')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

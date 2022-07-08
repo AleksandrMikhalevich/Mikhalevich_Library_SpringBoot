@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="2022-07-08-01-create-table-publisher.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-02-create-table-author.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-03-create-table-genre.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-04-create-table-book.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-05-create-table-library-user.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-06-create-table-roles.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-07-create-table-book-author.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-08-create-table-book-genre.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-09-create-table-author-publisher.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-10-add-publisher-data.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-11-add-author-data.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-12-connect-author-publisher.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-13-add-genre-data.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-14-modify-table-genre.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-15-modify-table-book.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-16-add-book-data.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-17-connect-book-author.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-18-connect-book-genre.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-19-add-library-user-data.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-20-add-roles-data.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-21-create-table-user-role.xml" relativeToChangelogFile="true"/>
+    <include file="2022-07-08-22-connect-user-role.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>

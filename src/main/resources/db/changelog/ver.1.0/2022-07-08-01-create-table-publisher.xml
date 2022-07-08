@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="1" author="Alex Mikhalevich">
+        <comment>create table publisher</comment>
+        <sql>
+            create table publisher
+            (
+                id      int auto_increment
+                    primary key,
+                city    varchar(255) null,
+                country varchar(255) null,
+                house   varchar(255) null,
+                street  varchar(255) null,
+                zipcode varchar(255) null,
+                name    varchar(255) not null
+            );
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
