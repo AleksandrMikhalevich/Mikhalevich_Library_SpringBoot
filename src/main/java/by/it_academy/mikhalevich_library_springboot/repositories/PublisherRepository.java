@@ -1,4 +1,4 @@
-package by.it_academy.mikhalevich_library_springboot.repository;
+package by.it_academy.mikhalevich_library_springboot.repositories;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Publisher;
 import org.springframework.data.jpa.repository.JpaRepository;
