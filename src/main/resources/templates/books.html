@@ -3,36 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Книги</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+    <th:block th:include="header.html"/>
 </head>
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#filterModal">
-    Фильтры
-</button>
-<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filtering" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="filtering">Настроить фильтры</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
-            </div>
-            <form th:action="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-                <div class="modal-body">
-                    <label>Фильтрация по названию:
-                        <br>
-                        <input type="text" name="titleFilter" placeholder="Укажите название">
-                        <br>
-                    </label>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Закрыть</button>
-                    <input type="hidden" name="pageSize" th:value="${pageSize}">
-                    <input type="hidden" name="sortField" th:value="${sortField}">
-                    <input type="hidden" name="sortDir" th:value="${sortDir}">
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                </div>
-            </form>
-        </div>
+<p>
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+            aria-expanded="false" aria-controls="collapseExample">
+        Фильтры
+    </button>
+</p>
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <form th:action="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+
+            <label>Фильтрация по названию:
+                <br>
+                <input type="text" name="titleFilter" placeholder="Укажите название">
+                <br>
+            </label>
+
+            <input type="hidden" name="pageSize" th:value="${pageSize}">
+            <input type="hidden" name="sortField" th:value="${sortField}">
+            <input type="hidden" name="sortDir" th:value="${sortDir}">
+            <button type="submit" class="btn btn-primary">Сохранить</button>
+
+        </form>
     </div>
 </div>
 <body>
@@ -41,38 +35,42 @@
     <button type="submit" class="btn btn-outline-success">Добавить книгу</button>
 </form>
 <div style="text-align: center;">
+    <div th:if="${#authorization.expression('isAuthenticated()')}" class="text fw-light fs-6 lh-1">
+    </div>
     <div th:switch="${books}">
         <h2 th:case="null">База данных книг пока пуста!</h2>
         <div th:case="*">
             <h2>Книги</h2>
-            <table class="table">
+            <table class="table table-bordered">
                 <thead>
                 <tr>
-                    <th scope="col">
+                    <th scope="col" class="align-middle">
                         <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="align-middle">
                         <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Название</a>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="align-middle">
                         <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=language&sortDir=' + ${reverseSortDir}}">Язык</a>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="align-middle">
                         <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=summary&sortDir=' + ${reverseSortDir}}">Аннотация</a>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="align-middle">
                         <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=authors&sortDir=' + ${reverseSortDir}}">Авторы</a>
                     </th>
-                    <th scope="col">
+                    <th scope="col" class="align-middle">
                         <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=genres&sortDir=' + ${reverseSortDir}}">Жанры</a>
                     </th>
-                    <th scope="col">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата поступления</a>
+                    <th scope="col" class="align-middle">
+                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата
+                            поступления</a>
                     </th>
-                    <th scope="col">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год публикации</a>
+                    <th scope="col" class="align-middle">
+                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год
+                            публикации</a>
                     </th>
-                    <th colspan="2">Действия</th>
+                    <th colspan="2" class="align-middle">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -81,8 +79,14 @@
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.language}"></td>
                     <td th:text="${book.summary}"></td>
-                    <td th:text="${book.authors}"></td>
-                    <td th:text="${book.genres}"></td>
+                    <td th:each="author : ${book.authors}">
+                        <th:block th:text="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}">
+                        </th:block>
+                    </td>
+                    <td th:each="genre : ${book.genres}">
+                        <th:block th:text="${genre.name}">
+                        </th:block>
+                    </td>
                     <td th:text="${book.receiptDate}"></td>
                     <td th:text="${book.yearOfPublishing}"></td>
                     <td>
@@ -101,9 +105,6 @@
         </div>
     </div>
 </div>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
-        crossorigin="anonymous"></script>
 </body>
 <p>
 <nav aria-label="paginationBooks">
@@ -116,7 +117,6 @@
                 </select>
                 <input type="hidden" name="sortField" th:value="${sortField}">
                 <input type="hidden" name="sortDir" th:value="${sortDir}">
-                <br>
                 <button type="submit" class="btn btn-primary">Сохранить</button>
             </label>
         </form>
@@ -168,4 +168,5 @@
         Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
     </div>
 </nav>
+<th:block th:include="footer.html"/>
 </html>

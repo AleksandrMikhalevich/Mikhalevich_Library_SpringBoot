@@ -24,8 +24,13 @@ public class AppController {
 
     private final BookService bookService;
 
+    @GetMapping("/")
+    public String showMain(Model model) {
+        return "index";
+    }
+
     @GetMapping("/new-book")
-    public String newHorse(@ModelAttribute("book") BookDto bookDto) {
+    public String newBook(@ModelAttribute("book") BookDto bookDto) {
         return "add-book";
     }
 
@@ -53,7 +58,7 @@ public class AppController {
         if (bindingResult.hasErrors())
             return "update-book";
         bookService.updateBook(bookDto);
-        return getPaginatedHorses(pageNumber, pageSize, sortField, sortDir, null, model);
+        return showPaginatedSortedFilteredBooks(pageNumber, pageSize, sortField, sortDir, null, model);
     }
 
     @DeleteMapping("/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
@@ -64,13 +69,13 @@ public class AppController {
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
-        return getPaginatedHorses(pageNumber, pageSize, sortField, sortDir, null, model);
+        return showPaginatedSortedFilteredBooks(pageNumber, pageSize, sortField, sortDir, null, model);
     }
 
     @GetMapping("/page/{pageNumber}")
-    public String getPaginatedHorses(@PathVariable("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize,
-                                     @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir,
-                                     @Param("titleFilter") String titleFilter, Model model) {
+    public String showPaginatedSortedFilteredBooks(@PathVariable("pageNumber") int pageNumber, @RequestParam("pageSize") int pageSize,
+                                                   @RequestParam("sortField") String sortField, @RequestParam("sortDir") String sortDir,
+                                                   @Param("titleFilter") String titleFilter, Model model) {
         BookFilter bookFilter = BookFilter.builder()
                 .titleFilter(titleFilter)
                 .build();
@@ -89,8 +94,8 @@ public class AppController {
         return "books";
     }
 
-    @GetMapping("/")
-    public String showHorsesFirstPage(Model model) {
-        return getPaginatedHorses(1, 5, "id", "asc", null, model);
+    @GetMapping("/books")
+    public String showBooksFirstPage(Model model) {
+        return showPaginatedSortedFilteredBooks(1, 5, "id", "asc", null, model);
     }
 }
