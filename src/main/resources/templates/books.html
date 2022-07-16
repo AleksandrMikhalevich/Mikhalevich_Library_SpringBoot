@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>Книги</title>
-    <th:block th:include="header.html"/>
 </head>
-<p>
-    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-            aria-expanded="false" aria-controls="collapseExample">
+<body class="d-flex flex-column min-vh-100">
+<th:block th:include="header.html"/>
+<div class="w-90 p-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
+            aria-expanded="false" aria-controls="collapseFilters">
         Фильтры
     </button>
-</p>
-<div class="collapse" id="collapseExample">
+</div>
+<div class="collapse" id="collapseFilters">
     <div class="card card-body">
-        <form th:action="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+        <form th:action="@{'/books/page/' + ${currentPage}}">
 
             <label>Фильтрация по названию:
                 <br>
@@ -29,45 +30,45 @@
         </form>
     </div>
 </div>
-<body>
-<p>
-<form action="/new-book">
-    <button type="submit" class="btn btn-outline-success">Добавить книгу</button>
-</form>
-<div style="text-align: center;">
+<div class="w-90 p-3">
+    <form th:action="@{/books/new-book}">
+        <button type="submit" class="btn btn-outline-success">Добавить книгу</button>
+    </form>
+</div>
+<div class="w-90 p-3" style="text-align: center;">
     <div th:if="${#authorization.expression('isAuthenticated()')}" class="text fw-light fs-6 lh-1">
     </div>
     <div th:switch="${books}">
         <h2 th:case="null">База данных книг пока пуста!</h2>
         <div th:case="*">
             <h2>Книги</h2>
-            <table class="table table-bordered">
+            <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Название</a>
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Название</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=language&sortDir=' + ${reverseSortDir}}">Язык</a>
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=language&sortDir=' + ${reverseSortDir}}">Язык</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=summary&sortDir=' + ${reverseSortDir}}">Аннотация</a>
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=summary&sortDir=' + ${reverseSortDir}}">Аннотация</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=authors&sortDir=' + ${reverseSortDir}}">Авторы</a>
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=authors&sortDir=' + ${reverseSortDir}}">Авторы</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=genres&sortDir=' + ${reverseSortDir}}">Жанры</a>
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=genres&sortDir=' + ${reverseSortDir}}">Жанры</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата
                             поступления</a>
                     </th>
                     <th scope="col" class="align-middle">
-                        <a th:href="@{'/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год
+                        <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год
                             публикации</a>
                     </th>
                     <th colspan="2" class="align-middle">Действия</th>
@@ -80,22 +81,22 @@
                     <td th:text="${book.language}"></td>
                     <td th:text="${book.summary}"></td>
                     <td th:each="author : ${book.authors}">
-                        <th:block th:text="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}">
-                        </th:block>
+                        <div th:text="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}">
+                        </div>
                     </td>
                     <td th:each="genre : ${book.genres}">
-                        <th:block th:text="${genre.name}">
-                        </th:block>
+                        <div th:text="${genre.name}">
+                        </div>
                     </td>
                     <td th:text="${book.receiptDate}"></td>
                     <td th:text="${book.yearOfPublishing}"></td>
                     <td>
-                        <form th:action="@{/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id},page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
+                        <form th:action="@{/books/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id},page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
                             <button type="submit" class="btn btn-outline-warning">Редактировать</button>
                         </form>
                     <td>
                         <form th:method="DELETE"
-                              th:action="@{/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id},page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
+                              th:action="@{/books/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id},page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
                             <button type="submit" class="btn btn-outline-danger">Удалить</button>
                         </form>
                     </td>
@@ -105,68 +106,76 @@
         </div>
     </div>
 </div>
-</body>
-<p>
 <nav aria-label="paginationBooks">
     <div style="text-align: center;">
-        <form th:action="@{'/page/'+ ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
-            <label>Отображать по:
-                <select name="pageSize" th:value="pageSize">
-                    <option value="5">5</option>
-                    <option value="10">10</option>
-                </select>
-                <input type="hidden" name="sortField" th:value="${sortField}">
-                <input type="hidden" name="sortDir" th:value="${sortDir}">
-                <button type="submit" class="btn btn-primary">Сохранить</button>
-            </label>
+        <form th:action="@{'/books/page/'+ ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+            <div th:if="${pageSize == 5}">
+                <label>Отображение по:
+                    <select class="form-select" aria-label="Default select example" size="1" name="pageSize" th:value="${pageSize}">
+                        <option selected value="5">5 книг</option>
+                        <option value="10">10 книг</option>
+                    </select>
+                    <input type="hidden" name="sortField" th:value="${sortField}">
+                    <input type="hidden" name="sortDir" th:value="${sortDir}">
+                    <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                </label>
+            </div>
+            <div th:if="${pageSize == 10}">
+                <label>Отображение по:
+                    <select class="form-select" aria-label="Default select example" size="1" name="pageSize" th:value="${pageSize}">
+                        <option value="5">5 книг</option>
+                        <option selected value="10">10 книг</option>
+                    </select>
+                    <input type="hidden" name="sortField" th:value="${sortField}">
+                    <input type="hidden" name="sortDir" th:value="${sortDir}">
+                    <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                </label>
+            </div>
         </form>
     </div>
-
+    <p>
     <ul class="pagination justify-content-center">
-
         <li class="page-item">
             <a class="page-link" th:if="${currentPage > 1}"
-               th:href="@{'/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+               th:href="@{'/books/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
             </a>
             <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
         </li>
-
         <li class="page-item">
             <a class="page-link" th:if="${currentPage > 1}"
-               th:href="@{'/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+               th:href="@{'/books/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
         </li>
-
         <li class="d-flex flex-row page-item active" aria-current="page">
             <span th:each="i: ${#numbers.sequence(1, totalPages)}">
         <a class="page-link" th:if="${i != currentPage}"
-           th:href="@{'/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+           th:href="@{'/books/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
         </a>
         <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
         </span>
         </li>
-
         <li class="page-item">
             <a class="page-link" th:if="${currentPage < totalPages}"
-               th:href="@{'/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+               th:href="@{'/books/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
                 <span aria-hidden="true">&raquo;</span>
             </a>
             <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
         </li>
-
         <li class="page-item">
             <a class="page-link" th:if="${currentPage < totalPages}"
-               th:href="@{'/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+               th:href="@{'/books/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
             </a>
             <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
         </li>
-
     </ul>
     <div style="text-align: center;">
         Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
     </div>
 </nav>
+<div class="wrapper flex-grow-1">
+</div>
 <th:block th:include="footer.html"/>
+</body>
 </html>

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/bookValidation.js}"></script>
+    <title>Новая книга</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<th:block th:include="header.html"/>
+<p>
+<div style="text-align: center;">
+    <h2>Добавить книгу</h2>
+</div>
+<div class="container">
+    <form>
+        <fieldset>
+            <legend>Выбор авторов</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${bookAuthors == null}">
+                    <input type="text" class="form-control" disabled placeholder="Авторы" aria-label="Авторы"
+                           aria-describedby="button-addon1">
+                </th:block>
+                <th:block th:if="${bookAuthors != null}">
+                    <th:block th:each="author : ${bookAuthors}">
+                        <label>
+                            <input type="text" class="form-control"
+                                   th:placeholder="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}"
+                                   aria-describedby="button-addon1">
+                        </label>
+                    </th:block>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon1"
+                        th:formaction="|@{/books/new-book/choose-authors}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Выбор жанров</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${bookGenres == null}">
+                    <input type="text" name="genres" class="form-control" disabled placeholder="Жанры"
+                           aria-label="Жанры"
+                           aria-describedby="button-addon2">
+                </th:block>
+                <th:block th:if="${bookGenres != null}">
+                    <th:block th:each="genre : ${bookGenres}">
+                        <label>
+                            <input type="text" class="form-control" th:placeholder="${genre.name}"
+                                   aria-describedby="button-addon2">
+                        </label>
+                    </th:block>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2"
+                        th:formaction="|@{/books/new-book/choose-genres}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Выбор издательства</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${bookPublisher == null}">
+                    <input type="text" name="publisher" class="form-control" disabled placeholder="Издательство"
+                           aria-label="Издательство"
+                           aria-describedby="button-addon3">
+                </th:block>
+                <th:block th:if="${bookPublisher != null}">
+                    <label>
+                        <input type="text" class="form-control" th:placeholder="${bookPublisher.name}"
+                               aria-describedby="button-addon3">
+                    </label>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon3"
+                        th:formaction="|@{/books/new-book/choose-publisher}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+    </form>
+    <form name="addBook" th:method="POST" th:action="@{/books/add-book}" onsubmit="return validateForm()">
+        <input type="hidden" name="authors" th:value="${bookAuthors}">
+        <th:block th:each="author : ${bookAuthors}">
+            <input type="hidden" name="authorsIds" th:value="${author.id}">
+        </th:block>
+        <input type="hidden" name="genres" th:value="${bookGenres}">
+        <th:block th:each="genre : ${bookGenres}">
+            <input type="hidden" name="genresIds" th:value="${genre.id}">
+        </th:block>
+        <input type="hidden" name="publisher" th:value="${bookPublisher}">
+        <th:block th:if="${bookPublisher != null}">
+            <input type="hidden" name="publisherId" th:value="${bookPublisher.id}">
+        </th:block>
+        <fieldset>
+            <legend>Общая информация</legend>
+            <div class="mb-3">
+                <label for="titleInput" class="form-label">Название</label>
+                <input type="text" id="titleInput" name="title" class="form-control" placeholder="Название">
+            </div>
+            <div class="mb-3">
+                <label for="languageInput" class="form-label">Язык</label>
+                <input type="text" id="languageInput" name="language" class="form-control" placeholder="Язык">
+            </div>
+            <div class="mb-3">
+                <label for="summaryInput" class="form-label">Аннотация</label>
+                <input type="text" id="summaryInput" name="summary" class="form-control" placeholder="Аннотация">
+            </div>
+            <div class="mb-3">
+                <label for="receiptDateInput" class="form-label">Дата поступления</label>
+                <input type="date" id="receiptDateInput" name="receiptDate" class="form-control"
+                       placeholder="Дата поступления">
+            </div>
+            <div class="mb-3">
+                <label for="yearOfPublishingInput" class="form-label">Год издания</label>
+                <input type="text" id="yearOfPublishingInput" name="yearOfPublishing" class="form-control"
+                       placeholder="Год издания в формате 'гггг'">
+            </div>
+        </fieldset>
+        <button type="submit" class="btn btn-outline-success">Сохранить</button>
+    </form>
+    <p>
+    <div style="text-align: center;">
+        <form th:action="@{/books}">
+            <button type="submit" class="btn btn-secondary">Назад</button>
+        </form>
+    </div>
+    <p>
+</div>
+<div class="wrapper flex-grow-1">
+</div>
+<th:block th:include="footer.html"/>
+</body>
+</html>

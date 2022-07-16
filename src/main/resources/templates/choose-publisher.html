@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор авторов для книги</title>
+    <th:block th:include="header.html"/>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div class="w-90 p-3" style="text-align: center;">
+    <form th:action="@{/books/new-book/choose-publisher/confirm}">
+        <div th:switch="${publishers}">
+            <h2 th:case="null">База данных издательств пока пуста!</h2>
+            <div th:case="*">
+                <h2>Авторы</h2>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.country&sortDir=' + ${reverseSortDir}}">Страна</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.city&sortDir=' + ${reverseSortDir}}">Город</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.street&sortDir=' + ${reverseSortDir}}">Улица</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.house&sortDir=' + ${reverseSortDir}}">Дом</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.zipcode&sortDir=' + ${reverseSortDir}}">Почтовый индекс</a>
+                        </th>
+                        <th scope="col" class="align-middle">Выбор</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="publisher : ${publishers}">
+                        <td th:text="${publisher.id}"></td>
+                        <td th:text="${publisher.name}"></td>
+                        <td th:text="${publisher.address.country}"></td>
+                        <td th:text="${publisher.address.city}"></td>
+                        <td th:text="${publisher.address.street}"></td>
+                        <td th:text="${publisher.address.house}"></td>
+                        <td th:text="${publisher.address.zipcode}"></td>
+                        <td>
+                            <div class="form-check d-flex justify-content-center">
+                                <input class="form-check-input" type="radio" name="publisherId"
+                                       th:value="${publisher.id}"
+                                       id="flexRadioDefault">
+                                <label class="form-check-label" for="flexRadioDefault">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success">Выбрать издательство</button>
+    </form>
+</div>
+<p>
+<div style="text-align: center;">
+    <form th:action="@{/books/new-book}">
+        <button type="submit" class="btn btn-secondary">Назад</button>
+    </form>
+</div>
+<p>
+</body>
+<div class="wrapper flex-grow-1">
+</div>
+<th:block th:include="footer.html"/>
+</html>
