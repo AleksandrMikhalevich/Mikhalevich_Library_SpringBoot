@@ -1,4 +1,4 @@
-package by.it_academy.mikhalevich_library_springboot.search_filters;
+package by.it_academy.mikhalevich_library_springboot.filters;
 
 import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Date;
-import java.util.Set;
 
 /**
  * @author Alex Mikhalevich
@@ -20,6 +19,7 @@ import java.util.Set;
 public class BookFilter {
 
     private String titleFilter;
+    //    TODO filters
     private String languageFilter;
     private String summaryFilter;
     private BookDto.AuthorDto authorName;
