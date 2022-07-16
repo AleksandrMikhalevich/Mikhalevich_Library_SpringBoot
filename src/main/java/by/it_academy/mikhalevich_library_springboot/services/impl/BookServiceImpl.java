@@ -1,11 +1,15 @@
 package by.it_academy.mikhalevich_library_springboot.services.impl;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Book;
+import by.it_academy.mikhalevich_library_springboot.repositories.AuthorRepository;
 import by.it_academy.mikhalevich_library_springboot.repositories.BookRepository;
-import by.it_academy.mikhalevich_library_springboot.search_filters.BookFilter;
+import by.it_academy.mikhalevich_library_springboot.filters.BookFilter;
+import by.it_academy.mikhalevich_library_springboot.repositories.GenreRepository;
+import by.it_academy.mikhalevich_library_springboot.repositories.PublisherRepository;
+import by.it_academy.mikhalevich_library_springboot.services.dto.AuthorDto;
 import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.BookService;
-import by.it_academy.mikhalevich_library_springboot.services.mappers.BookMapper;
+import by.it_academy.mikhalevich_library_springboot.services.mappers.*;
 import by.it_academy.mikhalevich_library_springboot.specifications.BookSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,8 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.sql.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Alex Mikhalevich
@@ -26,11 +33,17 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
-
+    private final AuthorRepository authorRepository;
+    private final GenreRepository genreRepository;
+    private final PublisherRepository publisherRepository;
     private final BookMapper bookMapper;
+    private final AuthorMapper authorMapper;
+    private final GenreMapper genreMapper;
+    private final PublisherMapper publisherMapper;
+    private final AdditionalMapper additionalMapper;
 
     @Override
-    public Page<BookDto> findAllPaginatedSortedFiltered(BookFilter bookFilter, int pageNumber, int pageSize, String sortField, String sortDirection) {
+    public Page<BookDto> findAllBooksPaginatedSortedFiltered(BookFilter bookFilter, int pageNumber, int pageSize, String sortField, String sortDirection) {
         Specification<Book> bookSpecification =
                 Specification
                         .where(Optional.ofNullable(bookFilter.getTitleFilter())
@@ -50,12 +63,38 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto findBookById(int id) {
-        Book book = bookRepository.findById(id).orElse(null);
-        return bookMapper.bookToBookDto(book);
+        return bookRepository.findById(id).map(bookMapper::bookToBookDto).orElse(null);
     }
 
     @Override
-    public void addBook(BookDto bookDto) {
+    @Transactional
+    public void addBook(Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
+                        Date receiptDate, String yearOfPublishing) {
+        List<Integer> listOfAuthorIds = new ArrayList<>();
+        Collections.addAll(listOfAuthorIds, authorsIds);
+        Set<BookDto.AuthorDto> authorDtoSet = authorRepository.findAllById(listOfAuthorIds).stream()
+                .map(authorMapper::authorToAuthorDto)
+                .map(additionalMapper::toBookAuthorDto)
+                .collect(Collectors.toSet());
+        List<Integer> listOfGenresIds = new ArrayList<>();
+        Collections.addAll(listOfGenresIds, genresIds);
+        Set<BookDto.GenreDto> genreDtoSet = genreRepository.findAllById(listOfGenresIds).stream()
+                .map(genreMapper::genreToGenreDto)
+                .map(additionalMapper::toBookGenreDto)
+                .collect(Collectors.toSet());
+        BookDto.PublisherDto publisherDto = publisherRepository.findById(publisherId)
+                .map(publisherMapper::publisherToPublisherDto)
+                .map(additionalMapper::toBookPublisherDto).orElse(null);
+        BookDto bookDto = BookDto.builder()
+                .title(title)
+                .language(language)
+                .summary(summary)
+                .authors(authorDtoSet)
+                .genres(genreDtoSet)
+                .publisher(publisherDto)
+                .receiptDate(receiptDate)
+                .yearOfPublishing(yearOfPublishing)
+                .build();
         bookRepository.save(bookMapper.bookDtoToBook(bookDto));
     }
 
