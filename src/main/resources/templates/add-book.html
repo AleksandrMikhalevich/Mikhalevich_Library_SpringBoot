@@ -6,7 +6,7 @@
     <title>Новая книга</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<th:block th:include="header.html"/>
+<div th:insert="~{header :: header}"></div>
 <p>
 <div style="text-align: center;">
     <h2>Добавить книгу</h2>
@@ -125,6 +125,7 @@
 </div>
 <div class="wrapper flex-grow-1">
 </div>
-<th:block th:include="footer.html"/>
+<p>
+<div th:insert="~{footer :: footer}"></div>
 </body>
 </html>

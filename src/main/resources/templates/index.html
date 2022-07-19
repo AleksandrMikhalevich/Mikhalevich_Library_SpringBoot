@@ -2,13 +2,12 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Библиотека "Bookаньеры"</title>
-
+    <title>Библиотека Bookаньеры</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
-<th:block th:include="header.html"/>
+<div th:insert="~{header :: header}"></div>
 <div class="wrapper flex-grow-1">
 </div>
-<th:block th:include="footer.html"/>
+<div th:insert="~{footer :: footer}"></div>
 </body>
 </html>
