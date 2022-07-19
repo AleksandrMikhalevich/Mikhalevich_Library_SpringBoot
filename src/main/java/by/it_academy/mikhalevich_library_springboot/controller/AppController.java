@@ -41,33 +41,41 @@ public class AppController {
     private final PublisherService publisherService;
 
     @GetMapping("/")
-    public String showMain(Model model) {
+    public String showMain() {
         return "index";
     }
 
     @GetMapping("/books")
     public String showBooksFirstPage(Model model, SessionStatus sessionStatus) {
         sessionStatus.setComplete();
-        return showPaginatedSortedFilteredBooks(1, 5, "id", "asc", null, model);
+        return showPaginatedSortedFilteredBooks(1, 5, "id", "asc", null,
+                null,null, null, null, null, model);
     }
 
     @GetMapping("/books/page/{pageNumber}")
     public String showPaginatedSortedFilteredBooks(@PathVariable("pageNumber") int pageNumber, int pageSize,
-                                                   String sortField, String sortDir, String titleFilter, Model model) {
+                                                   String sortField, String sortDir, String titleFilter, String languageFilter,
+                                                   String summaryFilter, String authorFilter, String genreFilter, String publisherFilter,
+                                                   Model model) {
         BookFilter bookFilter = BookFilter.builder()
                 .titleFilter(titleFilter)
+                .languageFilter(languageFilter)
+                .summaryFilter(summaryFilter)
+                .authorFilter(authorFilter)
+                .genreFilter(genreFilter)
+                .publisherFilter(publisherFilter)
                 .build();
         Page<BookDto> page = bookService.findAllBooksPaginatedSortedFiltered(bookFilter, pageNumber, pageSize, sortField, sortDir);
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<BookDto> books = page.getContent();
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        doPaginationSortingFiltration(pageNumber, pageSize, sortField, sortDir, model, totalPages, totalItems);
+        model.addAttribute("titleFilter", titleFilter);
+        model.addAttribute("languageFilter", languageFilter);
+        model.addAttribute("summaryFilter", summaryFilter);
+        model.addAttribute("authorFilter", authorFilter);
+        model.addAttribute("genreFilter", genreFilter);
+        model.addAttribute("publisherFilter", publisherFilter);
         model.addAttribute("books", books);
         return "books";
     }
@@ -80,21 +88,13 @@ public class AppController {
     @PostMapping("/books/add-book")
     public String addBook(Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language,
                           String summary, Date receiptDate, String yearOfPublishing) {
-        System.out.println(Arrays.toString(authorsIds));
-        System.out.println(Arrays.toString(genresIds));
-        System.out.println(publisherId);
-        System.out.println(title);
-        System.out.println(language);
-        System.out.println(summary);
-        System.out.println(receiptDate);
-        System.out.println(yearOfPublishing);
         bookService.addBook(authorsIds, genresIds, publisherId, title, language, summary, receiptDate, yearOfPublishing);
         return "redirect:/books";
     }
 
-    @GetMapping("/books/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String editBook(Model model, @PathVariable("id") int id, @PathVariable int pageNumber, @PathVariable int pageSize, @PathVariable String sortField,
-                            @PathVariable String sortDir) {
+    @GetMapping("/books/page/{id}/{pageNumber}")
+    public String editBook(@PathVariable("id") int id, @PathVariable int pageNumber, int pageSize, String sortField,
+                           String sortDir, Model model) {
         BookDto bookDto = bookService.findBookById(id);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("pageSize", pageSize);
@@ -104,24 +104,27 @@ public class AppController {
         return "update-book";
     }
 
-    @PatchMapping("/books/{id}")
+    @PatchMapping("/books/edit-book/{id}")
     public String updateBook(Model model, @ModelAttribute("book") @Valid BookDto bookDto, int pageNumber, int pageSize, String sortField, String sortDir,
                               BindingResult bindingResult) {
         if (bindingResult.hasErrors())
             return "update-book";
         bookService.updateBook(bookDto);
-        return showPaginatedSortedFilteredBooks(pageNumber, pageSize, sortField, sortDir, null, model);
+        return showPaginatedSortedFilteredBooks(pageNumber, pageSize, sortField, sortDir, null, null,
+                null, null, null, null, model);
     }
 
-    @DeleteMapping("/books/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
+    @PostMapping("/books/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
     public String deleteBook(Model model, @PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber, @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                               @PathVariable("sortDir") String sortDir) {
+        System.out.println(id);
         bookService.deleteBookById(id);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
-        return showPaginatedSortedFilteredBooks(pageNumber, pageSize, sortField, sortDir, null, model);
+        return showPaginatedSortedFilteredBooks(pageNumber, pageSize, sortField, sortDir, null, null,
+                null, null, null, null, model);
     }
 
     @GetMapping("/books/new-book/choose-authors")
@@ -140,13 +143,7 @@ public class AppController {
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<AuthorDto> authors = page.getContent();
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        doPaginationSortingFiltration(pageNumber, pageSize, sortField, sortDir, model, totalPages, totalItems);
         model.addAttribute("authors", authors);
         return "choose-authors";
     }
@@ -174,13 +171,7 @@ public class AppController {
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<GenreDto> genres = page.getContent();
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        doPaginationSortingFiltration(pageNumber, pageSize, sortField, sortDir, model, totalPages, totalItems);
         model.addAttribute("genres", genres);
         return "choose-genres";
     }
@@ -208,13 +199,7 @@ public class AppController {
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<PublisherDto> publishers = page.getContent();
-        model.addAttribute("currentPage", pageNumber);
-        model.addAttribute("pageSize", pageSize);
-        model.addAttribute("totalPages", totalPages);
-        model.addAttribute("totalItems", totalItems);
-        model.addAttribute("sortField", sortField);
-        model.addAttribute("sortDir", sortDir);
-        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+        doPaginationSortingFiltration(pageNumber, pageSize, sortField, sortDir, model, totalPages, totalItems);
         model.addAttribute("publishers", publishers);
         return "choose-publisher";
     }
@@ -225,5 +210,16 @@ public class AppController {
         model.addAttribute("bookPublisher", publisherDto);
         return "add-book";
     }
+
+    private void doPaginationSortingFiltration(@PathVariable("pageNumber") int pageNumber, int pageSize, String sortField, String sortDir, Model model, int totalPages, long totalItems) {
+        model.addAttribute("currentPage", pageNumber);
+        model.addAttribute("pageSize", pageSize);
+        model.addAttribute("totalPages", totalPages);
+        model.addAttribute("totalItems", totalItems);
+        model.addAttribute("sortField", sortField);
+        model.addAttribute("sortDir", sortDir);
+        model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    }
+
 
 }

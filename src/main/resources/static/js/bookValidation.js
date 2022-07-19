@@ -40,7 +40,7 @@ function validateForm() {
     const date = new Date();
     const year = date.getFullYear();
     if (y < 1000 || y > year || (typeof y !== 'number' && isNaN(y))) {
-        alert("Введите год издания книги в формате 'гггг', например 2022");
+        alert("Введите год издания книги в формате 'гггг', например 2022, но не далее текущего года");
         return false;
     }
 }
