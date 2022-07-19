@@ -1,10 +1,10 @@
 package by.it_academy.mikhalevich_library_springboot.specifications;
 
-import by.it_academy.mikhalevich_library_springboot.entities.Book;
-import by.it_academy.mikhalevich_library_springboot.entities.Book_;
+import by.it_academy.mikhalevich_library_springboot.entities.*;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.*;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +19,86 @@ public class BookSpecification {
             List<Predicate> predicatesMain = new ArrayList<>();
             if (title != null) {
                 predicatesMain.add(criteriaBuilder.like(root.get(Book_.TITLE), "%" + title + "%"));
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookByLanguageSpec(String language) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (language != null) {
+                predicatesMain.add(criteriaBuilder.like(root.get(Book_.LANGUAGE), "%" + language + "%"));
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookBySummarySpec(String summary) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (summary != null) {
+                predicatesMain.add(criteriaBuilder.like(root.get(Book_.SUMMARY), "%" + summary + "%"));
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookByAuthorNameSpec(String authorName) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (authorName != null) {
+                query.distinct(true);
+                SetJoin<Book, Author> inAuthors = root.join(Book_.authors);
+                predicatesMain.add(criteriaBuilder.or(criteriaBuilder.like(inAuthors.get(Author_.firstName.getName()), "%" + authorName + "%"),
+                        criteriaBuilder.like(inAuthors.get(Author_.secondName.getName()), "%" + authorName + "%"),
+                        criteriaBuilder.like(inAuthors.get(Author_.surname.getName()), "%" + authorName + "%")));
+
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookByGenreNameSpec(String genreName) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (genreName != null) {
+                query.distinct(true);
+                SetJoin<Book, Genre> inGenres = root.join(Book_.genres);
+                predicatesMain.add(criteriaBuilder.like(inGenres.get(Genre_.name.getName()), "%" + genreName + "%"));
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookByPublisherNameSpec(String publisherName) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (publisherName != null) {
+                Join<Book, Publisher> inPublishers = root.join(Book_.publisher);
+                predicatesMain.add(criteriaBuilder.like(inPublishers.get(Publisher_.name.getName()), "%" + publisherName + "%"));
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookByReceiptDateSpec(Date fromDate, Date toDate) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (fromDate != null && toDate != null) {
+                predicatesMain.add(criteriaBuilder.between(root.get(Book_.RECEIPT_DATE), fromDate, toDate));
+            }
+            return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
+        };
+    }
+
+    public static Specification<Book> getBookByYearOfPublishingSpec(String year1, String year2) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicatesMain = new ArrayList<>();
+            if (year1 != null && year2 != null) {
+                int numYear1 = Integer.parseInt(year1);
+                int numYear2 = Integer.parseInt(year2);
+                predicatesMain.add(criteriaBuilder.between(root.get(Book_.YEAR_OF_PUBLISHING), numYear1, numYear2));
             }
             return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
         };

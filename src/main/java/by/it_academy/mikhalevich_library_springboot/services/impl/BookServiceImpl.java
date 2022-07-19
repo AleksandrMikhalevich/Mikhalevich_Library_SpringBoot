@@ -48,13 +48,24 @@ public class BookServiceImpl implements BookService {
                 Specification
                         .where(Optional.ofNullable(bookFilter.getTitleFilter())
                                 .map(BookSpecification::getBookByTitleSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(bookFilter.getLanguageFilter())
+                                .map(BookSpecification::getBookByLanguageSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(bookFilter.getSummaryFilter())
+                                .map(BookSpecification::getBookBySummarySpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(bookFilter.getAuthorFilter())
+                                .map(BookSpecification::getBookByAuthorNameSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(bookFilter.getGenreFilter())
+                                .map(BookSpecification::getBookByGenreNameSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(bookFilter.getPublisherFilter())
+                                .map(BookSpecification::getBookByPublisherNameSpec)
                                 .orElse(null));
-//                        .and(Optional.ofNullable(bookFilter.getLanguageFilter())
-//                                .map(BookSpecification::getHorseByPriceSpec)
-//                                .orElse(null))
-//                        .and(Optional.ofNullable(bookFilter.getSummaryFilter())
-//                                .map(BookSpecification::getHorseByTypeSpec)
-//                                .orElse(null));
+//                        .and(Optional.ofNullable(bookFilter.getReceiptDate1Filter())
+//                                .orElse(bookFilter.getReceiptDate2Filter()));
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
         Pageable paged = PageRequest.of(pageNumber - 1, pageSize, sort);

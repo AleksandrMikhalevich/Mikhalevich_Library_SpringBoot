@@ -19,13 +19,13 @@ import java.sql.Date;
 public class BookFilter {
 
     private String titleFilter;
-    //    TODO filters
     private String languageFilter;
     private String summaryFilter;
-    private BookDto.AuthorDto authorName;
-    private BookDto.GenreDto genreName;
-    private BookDto.PublisherDto publisherName;
-    private String yearOfPublishing;
-    private Date receiptDate;
+    private String authorFilter;
+    private String genreFilter;
+    private String publisherFilter;
+    private Date receiptDate1Filter;
+    private Date receiptDate2Filter;
+    private String yearOfPublishingFilter;
 
 }
