@@ -209,12 +209,13 @@
                     <td th:text="${book.receiptDate}"></td>
                     <td th:text="${book.yearOfPublishing}"></td>
                     <td>
-                        <form th:href="@{'/books/page/' + ${id} + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}(id=${book.id})}">
+                        <form th:method="get"
+                              th:action="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id}, page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
                             <button type="submit" class="btn btn-outline-warning">Редактировать</button>
                         </form>
                     <td>
                         <form th:method="post"
-                              th:action="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id},page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
+                              th:action="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id}, page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
                             <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
                                     data-bs-target="#deleteBookModal"
                                     th:attr="data-bs-target='#deleteBookModal' + ${book.id}">

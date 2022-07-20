@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Выбор авторов для книги</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
+            aria-expanded="false" aria-controls="collapseFilters">
+        Найти автора
+    </button>
+</div>
+<div class="collapsing" id="collapseFilters">
+    <div class="card card-body">
+        <form class="row g-3" th:action="@{'/books/edit-book/page/' + ${currentPage}}">
+            <div class="col-md-4 mb-3">
+                <label for="firstNameFilterInput" class="form-label">По названию:</label>
+                <input type="text" id="firstNameFilterInput" name="firstNameFilter" class="form-control"
+                       placeholder="">
+            </div>
+            <!--            <div class="col-md-4 mb-3">-->
+            <!--                <label for="languageFilterInput" class="form-label">По языку:</label>-->
+            <!--                <input type="text" id="languageFilterInput" name="languageFilter" class="form-control"-->
+            <!--                       placeholder="">-->
+            <!--            </div>-->
+            <!--            <div class="col-md-4 mb-3">-->
+            <!--                <label for="summaryFilterInput" class="form-label">По аннотации:</label>-->
+            <!--                <input type="text" id="summaryFilterInput" name="summaryFilter" class="form-control"-->
+            <!--                       placeholder="">-->
+            <!--            </div>-->
+            <!--            <div class="col-md-4 mb-3">-->
+            <!--                <label for="authorFilterInput" class="form-label">По авторам:</label>-->
+            <!--                <input type="text" id="authorFilterInput" name="authorFilter" class="form-control"-->
+            <!--                       placeholder="">-->
+            <!--            </div>-->
+            <!--            <div class="col-md-4 mb-3">-->
+            <!--                <label for="genreFilterInput" class="form-label">По жанрам:</label>-->
+            <!--                <input type="text" id="genreFilterInput" name="genreFilter" class="form-control"-->
+            <!--                       placeholder="">-->
+            <!--            </div>-->
+            <!--            <div class="col-md-4 mb-3">-->
+            <!--                <label for="publisherFilterInput" class="form-label">По издательствам:</label>-->
+            <!--                <input type="text" id="publisherFilterInput" name="publisherFilter" class="form-control"-->
+            <!--                       placeholder="">-->
+            <!--            </div>-->
+            <!--            <div class="input-group col-md-2 mb-3">-->
+            <!--                <label for="receiptDateFilterInput" class="form-label align-text-center">По дате поступления:</label>-->
+            <!--                <span class="input-group-text">От</span>-->
+            <!--                <input type="date" aria-label="От" id="receiptDateFilterInput" name="date1Filter" class="form-control">-->
+            <!--                <span class="input-group-text">До</span>-->
+            <!--                <input type="date" aria-label="До" name="date2Filter" class="form-control">-->
+            <!--            </div>-->
+            <!--            <div class="input-group col-md-2 mb-3">-->
+            <!--                <label for="yearOfPublishingFilterInput" class="form-label align-text-center">По году издания:</label>-->
+            <!--                <span class="input-group-text">От</span>-->
+            <!--                <input type="text" aria-label="От" id="yearOfPublishingFilterInput" name="year1Filter"-->
+            <!--                       class="form-control">-->
+            <!--                <span class="input-group-text">До</span>-->
+            <!--                <input type="text" aria-label="До" name="year2Filter" class="form-control">-->
+            <!--            </div>-->
+            <div class="col-12">
+                <input type="hidden" name="pageSize" th:value="${pageSize}">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="w-90 p-3" style="text-align: center;">
+    <form th:action="@{/books/edit-book/choose-authors/confirm}">
+        <div th:switch="${authors}">
+            <h2 th:case="null">База данных авторов пока пуста!</h2>
+            <div th:case="*">
+                <h2>Авторы</h2>
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=firstName&sortDir=' + ${reverseSortDir}}">Имя</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=secondName&sortDir=' + ${reverseSortDir}}">Отчество</a>
+                        </th>
+                        <th scope="col" class="align-middle">
+                            <a th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=country&sortDir=' + ${reverseSortDir}}">Страна</a>
+                        </th>
+                        <th scope="col" class="align-middle">Выбор</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="author : ${authors}">
+                        <td th:text="${author.id}"></td>
+                        <td th:text="${author.surname}"></td>
+                        <td th:text="${author.firstName}"></td>
+                        <td th:text="${author.secondName}"></td>
+                        <td th:text="${author.country}"></td>
+                        <td>
+                            <div class="form-check d-flex justify-content-center">
+                                <input class="form-check-input" type="checkbox" name="authorsIds"
+                                       th:value="${author.id}"
+                                       id="flexCheckDefault"
+                                       onchange="document.getElementById('form_button').disabled = !this.checked;">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-outline-success" id="form_button" disabled="disabled">Выбрать авторов
+        </button>
+    </form>
+</div>
+<p>
+<div style="text-align: center;">
+    <form th:action="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id}, page=${page}, pageSize=${size}, sortField=${field},sortDir=${dir})}">
+        <button type="submit" class="btn btn-secondary">Назад</button>
+    </form>
+</div>
+<p>
+<nav aria-label="paginationAuthors">
+    <div style="text-align: center;">
+        <form th:action="@{'/books/edit-book/choose-authors/page/'+ ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+            <div th:if="${pageSize == 5}">
+                <label>Отображение по:
+                    <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                            th:value="${pageSize}">
+                        <option selected value="5">5 авторов</option>
+                        <option value="10">10 авторов</option>
+                    </select>
+                    <input type="hidden" name="sortField" th:value="${sortField}">
+                    <input type="hidden" name="sortDir" th:value="${sortDir}">
+                    <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                </label>
+            </div>
+            <div th:if="${pageSize == 10}">
+                <label>Отображение по:
+                    <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                            th:value="${pageSize}">
+                        <option value="5">5 авторов</option>
+                        <option selected value="10">10 авторов</option>
+                    </select>
+                    <input type="hidden" name="sortField" th:value="${sortField}">
+                    <input type="hidden" name="sortDir" th:value="${sortDir}">
+                    <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                </label>
+            </div>
+        </form>
+    </div>
+    <p>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <a class="page-link" th:if="${currentPage > 1}"
+               th:href="@{'/books/edit-book/choose-authors/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+            </a>
+            <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:if="${currentPage > 1}"
+               th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+            <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
+        </li>
+        <li class="d-flex flex-row page-item active" aria-current="page">
+            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a class="page-link" th:if="${i != currentPage}"
+           th:href="@{'/books/edit-book/choose-authors/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+        </a>
+        <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+        </span>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:if="${currentPage < totalPages}"
+               th:href="@{'/books/edit-book/choose-authors/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+            <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
+        </li>
+        <li class="page-item">
+            <a class="page-link" th:if="${currentPage < totalPages}"
+               th:href="@{'/books/edit-book/choose-authors/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+            </a>
+            <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
+        </li>
+    </ul>
+    <div style="text-align: center;">
+        Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+    </div>
+</nav>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

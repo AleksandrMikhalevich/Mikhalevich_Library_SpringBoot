@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/bookValidation.js}"></script>
+    <title>Редактирование книги</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<p>
+<div style="text-align: center;">
+    <h2>Редактировать книгу</h2>
+</div>
+<div class="container">
+    <form>
+        <fieldset>
+            <legend>Выбор авторов</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${bookAuthors == null}">
+                    <th:block th:each="author : ${book.authors}">
+                        <label>
+                            <input type="text" class="form-control"
+                                   th:value="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}"
+                                   disabled="disabled"
+                                   aria-describedby="button-addon1">
+                        </label>
+                    </th:block>
+                </th:block>
+                <th:block th:if="${bookAuthors != null}">
+                    <th:block th:each="author : ${bookAuthors}">
+                        <label>
+                            <input type="text" class="form-control"
+                                   th:value="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}"
+                                   disabled="disabled"
+                                   aria-describedby="button-addon1">
+                        </label>
+                    </th:block>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon1"
+                        th:formaction="|@{/books/edit-book/choose-authors}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Выбор жанров</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${bookGenres == null}">
+                    <th:block th:each="genre : ${book.genres}">
+                        <label>
+                            <input type="text" class="form-control" th:value="${genre.name}"
+                                   disabled="disabled"
+                                   aria-describedby="button-addon2">
+                        </label>
+                    </th:block>
+                </th:block>
+                <th:block th:if="${bookGenres != null}">
+                    <th:block th:each="genre : ${bookGenres}">
+                        <label>
+                            <input type="text" class="form-control" th:value="${genre.name}"
+                                   disabled="disabled"
+                                   aria-describedby="button-addon2">
+                        </label>
+                    </th:block>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2"
+                        th:formaction="|@{/books/edit-book/choose-genres}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>Выбор издательства</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${bookPublisher == null}">
+                    <label>
+                        <input type="text" class="form-control" th:value="${book.publisher.name}"
+                               disabled="disabled"
+                               aria-describedby="button-addon3">
+                    </label>
+                </th:block>
+                <th:block th:if="${bookPublisher != null}">
+                    <label>
+                        <input type="text" class="form-control" th:value="${bookPublisher.name}"
+                               disabled="disabled"
+                               aria-describedby="button-addon3">
+                    </label>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon3"
+                        th:formaction="|@{/books/edit-book/choose-publisher}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+    </form>
+    <form name="addBook" th:method="post" th:action="@{/books/update-book/{id}(id=${book.id})}" onsubmit="return validateForm()">
+        <input type="hidden" name="id" th:value="${book.id}">
+        <th:block th:if="${bookAuthors == null}">
+            <div th:each="author : ${book.authors}">
+                <input type="hidden" name="authorsIds" th:value="${author.id}">
+            </div>
+        </th:block>
+        <th:block th:if="${bookAuthors != null}">
+            <div th:each="author : ${bookAuthors}">
+                <input type="hidden" name="authorsIds" th:value="${author.id}">
+            </div>
+        </th:block>
+        <th:block th:if="${bookGenres == null}">
+            <div th:each="genre : ${book.genres}">
+                <input type="hidden" name="genresIds" th:value="${genre.id}">
+            </div>
+        </th:block>
+        <th:block th:if="${bookGenres != null}">
+            <div th:each="genre : ${bookGenres}">
+                <input type="hidden" name="genresIds" th:value="${genre.id}">
+            </div>
+        </th:block>
+        <th:block th:if="${bookPublisher == null}">
+            <input type="hidden" name="publisherId" th:value="${book.publisher.id}">
+        </th:block>
+        <th:block th:if="${bookPublisher != null}">
+            <input type="hidden" name="publisherId" th:value="${bookPublisher.id}">
+        </th:block>
+        <fieldset>
+            <legend>Общая информация</legend>
+            <div class="mb-3">
+                <label for="titleInput" class="form-label">Название</label>
+                <input type="text" id="titleInput" name="title" class="form-control" th:value="${book.title}">
+            </div>
+            <div class="mb-3">
+                <label for="languageInput" class="form-label">Язык</label>
+                <input type="text" id="languageInput" name="language" class="form-control" th:value="${book.language}">
+            </div>
+            <div class="mb-3">
+                <label for="summaryInput" class="form-label">Аннотация</label>
+                <input type="text" id="summaryInput" name="summary" class="form-control" th:value="${book.summary}">
+            </div>
+            <div class="mb-3">
+                <label for="receiptDateInput" class="form-label">Дата поступления</label>
+                <input type="date" id="receiptDateInput" name="receiptDate" class="form-control"
+                       th:value="${book.receiptDate}">
+            </div>
+            <div class="mb-3">
+                <label for="yearOfPublishingInput" class="form-label">Год издания</label>
+                <input type="text" id="yearOfPublishingInput" name="yearOfPublishing" class="form-control"
+                       th:value="${book.yearOfPublishing}">
+            </div>
+        </fieldset>
+        <input type="hidden" name="pageNumber" th:value="${page}">
+        <input type="hidden" name="pageSize" th:value="${size}">
+        <input type="hidden" name="sortField" th:value="${field}">
+        <input type="hidden" name="sortDir" th:value="${dir}">
+        <button type="submit" class="btn btn-outline-success">Сохранить</button>
+    </form>
+    <p>
+    <div style="text-align: center;">
+        <form th:action="@{/books/page/{page}(page=${page})}">
+            <input type="hidden" name="pageSize" th:value="${size}">
+            <input type="hidden" name="sortField" th:value="${field}">
+            <input type="hidden" name="sortDir" th:value="${dir}">
+            <button type="submit" class="btn btn-secondary">Назад</button>
+        </form>
+    </div>
+    <p>
+</div>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
