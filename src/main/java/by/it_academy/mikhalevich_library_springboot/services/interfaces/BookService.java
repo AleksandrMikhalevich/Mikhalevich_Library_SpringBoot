@@ -3,7 +3,6 @@ package by.it_academy.mikhalevich_library_springboot.services.interfaces;
 import by.it_academy.mikhalevich_library_springboot.filters.BookFilter;
 import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
 import org.springframework.data.domain.Page;
-import org.springframework.data.repository.query.Param;
 
 import java.sql.Date;
 
@@ -20,7 +19,8 @@ public interface BookService {
     void addBook(Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
                  Date receiptDate, String yearOfPublishing);
 
-    void updateBook(BookDto bookDto);
+    void updateBook(int id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
+                    Date receiptDate, String yearOfPublishing);
 
     void deleteBookById(int id);
 

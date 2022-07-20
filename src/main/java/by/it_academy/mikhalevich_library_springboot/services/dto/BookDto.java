@@ -17,16 +17,12 @@ import java.util.Set;
 @Builder
 public class BookDto implements Serializable {
     private final Integer id;
-    @NotBlank(message = "Поле не должно быть пустым")
     private final String title;
-    @NotBlank(message = "Поле не должно быть пустым")
     private final String language;
     private final String summary;
     private final Set<AuthorDto> authors;
     private final Set<GenreDto> genres;
     private final PublisherDto publisher;
-    @NotBlank(message = "Поле не должно быть пустым")
-    @Pattern(regexp = "^[1-9]\\d{3}$", message = "К вводу допустимы только цифры в формате 'гггг', например 2022")
     private final String yearOfPublishing;
     private final Date receiptDate;
 

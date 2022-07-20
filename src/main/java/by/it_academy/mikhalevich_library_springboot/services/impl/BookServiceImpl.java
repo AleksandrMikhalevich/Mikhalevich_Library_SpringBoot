@@ -110,7 +110,35 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(BookDto bookDto) {
+    @Transactional
+    public void updateBook(int id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
+                           Date receiptDate, String yearOfPublishing) {
+        List<Integer> listOfAuthorIds = new ArrayList<>();
+        Collections.addAll(listOfAuthorIds, authorsIds);
+        Set<BookDto.AuthorDto> authorDtoSet = authorRepository.findAllById(listOfAuthorIds).stream()
+                .map(authorMapper::authorToAuthorDto)
+                .map(additionalMapper::toBookAuthorDto)
+                .collect(Collectors.toSet());
+        List<Integer> listOfGenresIds = new ArrayList<>();
+        Collections.addAll(listOfGenresIds, genresIds);
+        Set<BookDto.GenreDto> genreDtoSet = genreRepository.findAllById(listOfGenresIds).stream()
+                .map(genreMapper::genreToGenreDto)
+                .map(additionalMapper::toBookGenreDto)
+                .collect(Collectors.toSet());
+        BookDto.PublisherDto publisherDto = publisherRepository.findById(publisherId)
+                .map(publisherMapper::publisherToPublisherDto)
+                .map(additionalMapper::toBookPublisherDto).orElse(null);
+        BookDto bookDto = BookDto.builder()
+                .id(id)
+                .title(title)
+                .language(language)
+                .summary(summary)
+                .authors(authorDtoSet)
+                .genres(genreDtoSet)
+                .publisher(publisherDto)
+                .receiptDate(receiptDate)
+                .yearOfPublishing(yearOfPublishing)
+                .build();
         bookRepository.save(bookMapper.bookDtoToBook(bookDto));
     }
 
