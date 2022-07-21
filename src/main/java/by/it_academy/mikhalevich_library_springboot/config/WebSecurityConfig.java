@@ -1,5 +1,6 @@
 package by.it_academy.mikhalevich_library_springboot.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
  * @author Alex Mikhalevich
@@ -16,15 +18,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  */
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Bean
-    public BCryptPasswordEncoder bCryptPasswordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
@@ -32,16 +29,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-//                .antMatchers("/*").hasAnyAuthority("ADMIN")
-//                .antMatchers("/", "/horse-create/*").hasAnyAuthority("USER", "ADMIN")
-                .antMatchers("/*").permitAll()
+                .antMatchers("/", "/index", "/books", "/books/**", "/img/logo.jpg").permitAll()
+
+//                .antMatchers("/books/*").hasAnyAuthority("ADMIN", "USER")
+//                .antMatchers("/books/*").hasAuthority("ADMIN")
+//                .antMatchers("/user/**").hasAuthority("USER")
+                .anyRequest().authenticated()
                 .and()
-                .formLogin().permitAll()
+                .formLogin()
+                .permitAll()
                 .defaultSuccessUrl("/", true)
                 .and()
                 .logout()
                 .permitAll()
-                .logoutSuccessUrl("/login");
+                .logoutSuccessUrl("/");
     }
 
     @Autowired
