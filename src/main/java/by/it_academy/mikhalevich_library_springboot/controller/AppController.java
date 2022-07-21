@@ -39,7 +39,7 @@ public class AppController {
     private final GenreService genreService;
     private final PublisherService publisherService;
 
-    @GetMapping("/")
+    @GetMapping(value = {"/", "/index"})
     public String showMain() {
         return "index";
     }
