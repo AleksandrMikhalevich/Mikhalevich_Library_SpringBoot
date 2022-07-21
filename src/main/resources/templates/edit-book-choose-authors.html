@@ -7,6 +7,16 @@
 <body class="d-flex flex-column min-vh-100">
 <div th:insert="~{header :: header}"></div>
 <div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/books" class="link-info">Книги</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id}, page=${page}, pageSize=${size}, sortField=${field},sortDir=${dir})}" class="link-info">Редактирование книги</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Выбор авторов</li>
+        </ol>
+    </nav>
+</div>
+<div class="w-90 p-3">
     <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
             aria-expanded="false" aria-controls="collapseFilters">
         Найти автора

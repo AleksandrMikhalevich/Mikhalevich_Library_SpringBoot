@@ -7,7 +7,17 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <div th:insert="~{header :: header}"></div>
-<p>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item">
+                <a th:href="@{'/books/page/' + ${page} + '?pageSize=' + ${size} + '&sortField=' + ${field} + '&sortDir=' + ${dir}}" class="link-info">
+                   Книги</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Редактирование книги</li>
+        </ol>
+    </nav>
+</div>
 <div style="text-align: center;">
     <h2>Редактировать книгу</h2>
 </div>

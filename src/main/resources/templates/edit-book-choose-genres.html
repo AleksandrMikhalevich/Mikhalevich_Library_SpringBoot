@@ -6,12 +6,22 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 <div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/books" class="link-info">Книги</a></li>
+            <li class="breadcrumb-item"><a th:href="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id}, page=${page}, pageSize=${size}, sortField=${field},sortDir=${dir})}" class="link-info">Редактирование книги</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Выбор жанров</li>
+        </ol>
+    </nav>
+</div>
 <div class="w-90 p-3" style="text-align: center;">
     <form th:action="@{/books/edit-book/choose-genres/confirm}">
         <div th:switch="${genres}">
             <h2 th:case="null">База данных жанров пока пуста!</h2>
             <div th:case="*">
-                <h2>Авторы</h2>
+                <h2>Жанры</h2>
                 <table class="table table-bordered table-hover">
                     <thead>
                     <tr>
