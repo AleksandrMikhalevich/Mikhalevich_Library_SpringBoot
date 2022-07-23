@@ -17,7 +17,7 @@
             <div class="container-fluid">
                 <a class="navbar-brand" href="/">
                     <img th:src="@{~/img/logo.jpg}" alt="" width="100" height="100"
-                         class="d-inline-block align-text-center" src="">
+                         class="d-inline-block align-middle" src="">
                     Библиотека Bookаньеры
                 </a>
             </div>
@@ -41,19 +41,31 @@
                     <a class="nav-link" href="#">Издательства</a>
                 </li>
             </ul>
-            <div class="position-absolute top-50 end-0 translate-middle-y">
-                <form class="w-90 p-3 align-text-center">
-                    <th:block th:if="${#authorization.expression('isAnonymous()')}">
-                        <a class="nav-link" th:href="@{/login}">Войти/Зарегистрироваться</a>
-                    </th:block>
-                    <th:block th:if="${#authorization.expression('isAuthenticated()')}">
-                    <span sec:authorize="isAuthenticated()">| Вы вошли: <span sec:authentication="name"></span> |
-                    Роль: <span sec:authentication="principal.authorities"></span> |
-                        <span>
-                    <a class="nav-link text-info" th:href="@{/logout}">Выйти</a></span>
-                    </span>
-                    </th:block>
-                </form>
+            <div class=" w-90 p-3 d-flex flex-row align-items-center">
+                <th:block th:if="${#authorization.expression('isAnonymous()')}">
+                    <a class="nav-link text-info" th:href="@{/login}">Войти  |</a>
+                    <div class="p-2" id="current_date_time_block">
+                        <script type="text/javascript">
+                            setInterval(function () {
+                                const now = new Date();
+                                document.getElementById('current_date_time_block').innerHTML = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+                            }, 1000);
+                        </script>
+                    </div>
+                </th:block>
+                <div class="w-90 p-3 d-flex flex-row align-items-center" th:if="${#authorization.expression('isAuthenticated()')}">
+                    <div class="p-2">Вы вошли: <span sec:authentication="name">|</span></div>
+                    <div class="p-2">Роль: <span sec:authentication="principal.authorities"></span></div>
+                    <div class="p-2"><a class="nav-link text-info" th:href="@{/logout}">Выйти  |</a></div>
+                    <div class="p-2" id="current_date_time_block2">
+                        <script type="text/javascript">
+                            setInterval(function () {
+                                const now = new Date();
+                                document.getElementById('current_date_time_block2').innerHTML = now.toLocaleDateString() + ' ' + now.toLocaleTimeString();
+                            }, 1000);
+                        </script>
+                    </div>
+                </div>
             </div>
         </div>
     </nav>

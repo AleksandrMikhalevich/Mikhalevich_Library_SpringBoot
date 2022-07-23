@@ -93,7 +93,8 @@
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
-                    <th scope="col" class="align-middle">
+                    <th scope="col" class="align-middle"
+                        th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <th:block
                                 th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
@@ -218,7 +219,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="book : ${books}">
-                    <td th:text="${book.id}"></td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:text="${book.id}"></td>
                     <td th:text="${book.title}"></td>
                     <td th:text="${book.language}"></td>
                     <td th:text="${book.summary}"></td>
@@ -237,7 +238,6 @@
                     <td th:text="${book.publisher.name}"></td>
                     <td th:text="${book.receiptDate}"></td>
                     <td th:text="${book.yearOfPublishing}"></td>
-
                     <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:method="get"
                               th:action="@{/books/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${book.id}, page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
@@ -277,24 +277,28 @@
                         </form>
                     </td>
                     <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:method="post" th:action="@{/uploadFile}" enctype="multipart/form-data">
                         <div class="upload-container">
                             <div class="upload-content">
-                                <form id="multipleUploadForm" name="multipleUploadForm">
-                                    <div class="input-group">
-                                        <input type="file" class="form-control" id="multipleFileUploadInput" aria-describedby="inputGroupFileAddon04" aria-label="Загрузка" multiple required>
-                                        <button class="btn btn-outline-secondary" type="submit" id="inputGroupFileAddon04">Прикрепить</button>
-                                    </div>
-                                </form>
-                                    <div class="upload-response">
-                                        <div id="multipleFileUploadError"></div>
-                                        <div id="multipleFileUploadSuccess"></div>
-                                    </div>
+                                <div class="input-group">
+                                        <input type="file" class="d-flex flex-row form-control" name="file" id="singleFileUploadInput"
+                                               aria-describedby="inputGroupFileAddon04" aria-label="Загрузка" required>
+                                        <input type="hidden" name="bookId" th:value="${book.id}">
+                                        <button class="d-flex flex-row btn btn-outline-secondary" type="submit"
+                                                id="inputGroupFileAddon04">Прикрепить</button>
                                 </div>
+                            </div>
                         </div>
-                        <script type="text/javascript" th:src="@{/js/files.js}"></script>
+                        </form>
+                        <p>
+                        <div th:if="${book.dbFileDto} != null">
+                            <a th:href="@{/downloadFile/{id}(id=${book.dbFileDto.id})}">Загрузить файл книги</a>
+                        </div>
                     </td>
                     <td th:if="${#authorization.expression('hasAuthority(''USER'')')}">
-                        <a href="#">Загрузить</a>
+                        <th:block th:if="${book.dbFileDto} != null">
+                        <a th:href="@{/downloadFile/{id}(id=${book.dbFileDto.id})}">Загрузить</a>
+                        </th:block>
                     </td>
                 </tr>
                 </tbody>
