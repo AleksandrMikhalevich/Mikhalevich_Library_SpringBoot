@@ -53,26 +53,32 @@
                 <input type="text" id="publisherFilterInput" name="publisherFilter" class="form-control"
                        th:placeholder="${publisherFilter}">
             </div>
-            <!--            <div class="input-group col-md-2 mb-3">-->
-            <!--                <label for="receiptDateFilterInput" class="form-label align-text-center">По дате поступления:</label>-->
-            <!--                <span class="input-group-text">От</span>-->
-            <!--                <input type="date" aria-label="От" id="receiptDateFilterInput" name="date1Filter" class="form-control">-->
-            <!--                <span class="input-group-text">До</span>-->
-            <!--                <input type="date" aria-label="До" name="date2Filter" class="form-control">-->
-            <!--            </div>-->
-            <!--            <div class="input-group col-md-2 mb-3">-->
-            <!--                <label for="yearOfPublishingFilterInput" class="form-label align-text-center">По году издания:</label>-->
-            <!--                <span class="input-group-text">От</span>-->
-            <!--                <input type="text" aria-label="От" id="yearOfPublishingFilterInput" name="year1Filter"-->
-            <!--                       class="form-control">-->
-            <!--                <span class="input-group-text">До</span>-->
-            <!--                <input type="text" aria-label="До" name="year2Filter" class="form-control">-->
-            <!--            </div>-->
+            <label for="receiptDateFilterInput" class="form-label">По дате поступления:</label>
+            <div class="input-group col-md-2 mb-3">
+                <span class="input-group-text">От</span>
+                <input type="date" aria-label="От" id="receiptDateFilterInput" name="fromDateFilter"
+                       class="form-control" th:value="${fromDateFilter}">
+                <span class="input-group-text">До</span>
+                <input type="date" aria-label="До" name="toDateFilter" class="form-control" th:value="${toDateFilter}">
+            </div>
+            <label for="yearOfPublishingFilterInput" class="form-label align-text-center">По году издания:</label>
+            <div class="input-group col-md-2 mb-3">
+                <span class="input-group-text">От</span>
+                <input type="text" aria-label="От" id="yearOfPublishingFilterInput" name="fromYearFilter"
+                       class="form-control" th:placeholder="${fromYearFilter}">
+                <span class="input-group-text">До</span>
+                <input type="text" aria-label="До" name="toYearFilter" class="form-control" th:placeholder="${toYearFilter}">
+            </div>
             <div class="col-12">
                 <input type="hidden" name="pageSize" th:value="${pageSize}">
                 <input type="hidden" name="sortField" th:value="${sortField}">
                 <input type="hidden" name="sortDir" th:value="${sortDir}">
                 <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+        <p>
+        <form th:action="@{/books/}">
+            <div class="col-12">
                 <button type="submit" class="btn btn-secondary">Сбросить</button>
             </div>
         </form>
@@ -96,112 +102,175 @@
                     <th scope="col" class="align-middle"
                         th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Название</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                           + '&pageSize=' + ${pageSize} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Название</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=title&sortDir=' + ${reverseSortDir}}">Название</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=language&sortDir=' + ${reverseSortDir}}">Язык</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=language&sortDir=' + ${reverseSortDir}}">Язык</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=language&sortDir=' + ${reverseSortDir}}">Язык</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=summary&sortDir=' + ${reverseSortDir}}">Аннотация</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=summary&sortDir=' + ${reverseSortDir}}">Аннотация</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=summary&sortDir=' + ${reverseSortDir}}">Аннотация</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=authors&sortDir=' + ${reverseSortDir}}">Авторы</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=authors.surname&sortDir=' + ${reverseSortDir}}">Авторы</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
-                            <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=authors&sortDir=' + ${reverseSortDir}}">Авторы</a>
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
+                            <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=authors.surname&sortDir=' + ${reverseSortDir}}">Авторы</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=genres&sortDir=' + ${reverseSortDir}}">Жанры</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=genres.name&sortDir=' + ${reverseSortDir}}">Жанры</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
-                            <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=genres&sortDir=' + ${reverseSortDir}}">Жанры</a>
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
+                            <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=genres.name&sortDir=' + ${reverseSortDir}}">Жанры</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=publisher.name&sortDir=' + ${reverseSortDir}}">Издательство</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=publisher.name&sortDir=' + ${reverseSortDir}}">Издательство</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=publisher.name&sortDir=' + ${reverseSortDir}}">Издательство</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата
                                 поступления</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=receiptDate&sortDir=' + ${reverseSortDir}}">Дата
                                 поступления</a>
                         </th:block>
                     </th>
                     <th scope="col" class="align-middle">
                         <th:block
-                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null}">
+                                th:if="${titleFilter != null} or ${languageFilter != null} or ${summaryFilter != null} or ${authorFilter != null}
+                                 or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null} or ${toDateFilter != null}
+                                  or ${fromYearFilter != null} or ${toYearFilter != null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год
+                          + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
+                           + ${toDateFilter} + '&fromYearFilter=' + ${fromYearFilter} + '&toYearFilter=' + ${toYearFilter}
+                            + '&pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год
                                 издания</a>
                         </th:block>
                         <th:block
-                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null} or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}">
+                                th:if="${titleFilter == null} or ${languageFilter == null} or ${summaryFilter == null}
+                                or ${authorFilter == null} or ${genreFilter == null} or ${publisherFilter == null}
+                                or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
+                                or ${toYearFilter == null}">
                             <a th:href="@{'/books/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=yearOfPublishing&sortDir=' + ${reverseSortDir}}">Год
                                 издания</a>
                         </th:block>
@@ -278,26 +347,28 @@
                     </td>
                     <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                         <form th:method="post" th:action="@{/uploadFile}" enctype="multipart/form-data">
-                        <div class="upload-container">
-                            <div class="upload-content">
-                                <div class="input-group">
-                                        <input type="file" class="d-flex flex-row form-control" name="file" id="singleFileUploadInput"
+                            <div class="upload-container">
+                                <div class="upload-content">
+                                    <div class="input-group">
+                                        <input type="file" class="d-flex flex-row form-control" name="file"
+                                               id="singleFileUploadInput"
                                                aria-describedby="inputGroupFileAddon04" aria-label="Загрузка" required>
                                         <input type="hidden" name="bookId" th:value="${book.id}">
                                         <button class="d-flex flex-row btn btn-outline-secondary" type="submit"
-                                                id="inputGroupFileAddon04">Прикрепить</button>
+                                                id="inputGroupFileAddon04">Прикрепить
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
                         </form>
                         <p>
-                        <div th:if="${book.dbFileDto} != null">
+                        <div th:if="${book.dbFileDto != null}">
                             <a th:href="@{/downloadFile/{id}(id=${book.dbFileDto.id})}">Загрузить файл книги</a>
                         </div>
                     </td>
                     <td th:if="${#authorization.expression('hasAuthority(''USER'')')}">
                         <th:block th:if="${book.dbFileDto} != null">
-                        <a th:href="@{/downloadFile/{id}(id=${book.dbFileDto.id})}">Загрузить</a>
+                            <a th:href="@{/downloadFile/{id}(id=${book.dbFileDto.id})}">Загрузить</a>
                         </th:block>
                     </td>
                 </tr>

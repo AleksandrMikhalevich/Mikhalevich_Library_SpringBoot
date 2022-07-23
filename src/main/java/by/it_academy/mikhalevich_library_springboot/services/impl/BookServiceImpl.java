@@ -6,7 +6,6 @@ import by.it_academy.mikhalevich_library_springboot.repositories.BookRepository;
 import by.it_academy.mikhalevich_library_springboot.filters.BookFilter;
 import by.it_academy.mikhalevich_library_springboot.repositories.GenreRepository;
 import by.it_academy.mikhalevich_library_springboot.repositories.PublisherRepository;
-import by.it_academy.mikhalevich_library_springboot.services.dto.AuthorDto;
 import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.BookService;
 import by.it_academy.mikhalevich_library_springboot.services.mappers.*;
@@ -63,9 +62,11 @@ public class BookServiceImpl implements BookService {
                                 .orElse(null))
                         .and(Optional.ofNullable(bookFilter.getPublisherFilter())
                                 .map(BookSpecification::getBookByPublisherNameSpec)
-                                .orElse(null));
-//                        .and(Optional.ofNullable(bookFilter.getReceiptDate1Filter())
-//                                .orElse(bookFilter.getReceiptDate2Filter()));
+                                .orElse(null))
+                        .and(BookSpecification.getBookByReceiptDateSpec(bookFilter.getReceiptDateFromFilter(),
+                                bookFilter.getReceiptDateToFilter()))
+                        .and(BookSpecification.getBookByYearOfPublishingSpec(bookFilter.getYearOfPublishingFromFilter(),
+                                bookFilter.getYearOfPublishingToFilter()));
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
         Pageable paged = PageRequest.of(pageNumber - 1, pageSize, sort);

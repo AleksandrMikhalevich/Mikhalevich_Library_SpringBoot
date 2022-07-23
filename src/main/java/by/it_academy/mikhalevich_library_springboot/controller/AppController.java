@@ -48,13 +48,15 @@ public class AppController {
     public String showBooksFirstPage(Model model, SessionStatus sessionStatus) {
         sessionStatus.setComplete();
         return showAllBooks(1, 5, "id", "asc", null,
-                null, null, null, null, null, model, sessionStatus);
+                null, null, null, null, null, null,
+                null, null, null, model, sessionStatus);
     }
 
     @GetMapping("/books/page/{pageNumber}")
     public String showAllBooks(@PathVariable("pageNumber") int pageNumber, int pageSize,
                                String sortField, String sortDir, String titleFilter, String languageFilter,
                                String summaryFilter, String authorFilter, String genreFilter, String publisherFilter,
+                               String fromDateFilter, String toDateFilter, String fromYearFilter, String toYearFilter,
                                Model model, SessionStatus sessionStatus) {
         sessionStatus.setComplete();
         BookFilter bookFilter = BookFilter.builder()
@@ -64,21 +66,21 @@ public class AppController {
                 .authorFilter(authorFilter)
                 .genreFilter(genreFilter)
                 .publisherFilter(publisherFilter)
+                .receiptDateFromFilter(fromDateFilter)
+                .receiptDateToFilter(toDateFilter)
+                .yearOfPublishingFromFilter(fromYearFilter)
+                .yearOfPublishingToFilter(toYearFilter)
                 .build();
         Page<BookDto> page = bookService.findAllBooksPaginatedSortedFiltered(bookFilter, pageNumber, pageSize, sortField, sortDir);
         int totalPages = page.getTotalPages();
         long totalItems = page.getTotalElements();
         List<BookDto> books = page.getContent();
         doPaginationSortingFiltration(pageNumber, pageSize, sortField, sortDir, model, totalPages, totalItems);
-        model.addAttribute("titleFilter", titleFilter);
-        model.addAttribute("languageFilter", languageFilter);
-        model.addAttribute("summaryFilter", summaryFilter);
-        model.addAttribute("authorFilter", authorFilter);
-        model.addAttribute("genreFilter", genreFilter);
-        model.addAttribute("publisherFilter", publisherFilter);
+        doBookFilters(titleFilter, languageFilter, summaryFilter, authorFilter, genreFilter, publisherFilter, fromDateFilter, toDateFilter, fromYearFilter, toYearFilter, model);
         model.addAttribute("books", books);
         return "books";
     }
+
 
     @GetMapping("/books/new-book")
     public String newBook() {
@@ -152,14 +154,15 @@ public class AppController {
     @PostMapping("/books/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
     public String deleteBook(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
                              @PathVariable int pageSize, @PathVariable("sortField") String sortField,
-                             @PathVariable("sortDir") String sortDir, Model model,  SessionStatus sessionStatus) {
+                             @PathVariable("sortDir") String sortDir, Model model, SessionStatus sessionStatus) {
         bookService.deleteBookById(id);
         model.addAttribute("currentPage", pageNumber);
         model.addAttribute("pageSize", pageSize);
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         return showAllBooks(pageNumber, pageSize, sortField, sortDir, null, null,
-                null, null, null, null, model, sessionStatus);
+                null, null, null, null, null, null,
+                null, null, model, sessionStatus);
     }
 
     @GetMapping("/books/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
@@ -235,12 +238,12 @@ public class AppController {
     @PostMapping("/books/update-book/{id}")
     public String updateBook(@PathVariable("id") int id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language,
                              String summary, Date receiptDate, String yearOfPublishing, int pageNumber, int pageSize,
-                             String sortField, String sortDir, Model model,  SessionStatus sessionStatus) {
+                             String sortField, String sortDir, Model model, SessionStatus sessionStatus) {
         bookService.updateBook(id, authorsIds, genresIds, publisherId, title, language, summary, receiptDate, yearOfPublishing);
         return showAllBooks(pageNumber, pageSize, sortField, sortDir, null, null,
-                null, null, null, null, model, sessionStatus);
+                null, null, null, null, null, null,
+                null, null, model, sessionStatus);
     }
-
 
     private void getAuthorsForBook(int pageNumber, int pageSize, String sortField, String sortDir, String firstNameFilter, Model model) {
         AuthorFilter authorFilter = AuthorFilter.builder()
@@ -286,6 +289,19 @@ public class AppController {
         model.addAttribute("sortField", sortField);
         model.addAttribute("sortDir", sortDir);
         model.addAttribute("reverseSortDir", sortDir.equals("asc") ? "desc" : "asc");
+    }
+
+    private void doBookFilters(String titleFilter, String languageFilter, String summaryFilter, String authorFilter, String genreFilter, String publisherFilter, String fromDateFilter, String toDateFilter, String fromYearFilter, String toYearFilter, Model model) {
+        model.addAttribute("titleFilter", titleFilter);
+        model.addAttribute("languageFilter", languageFilter);
+        model.addAttribute("summaryFilter", summaryFilter);
+        model.addAttribute("authorFilter", authorFilter);
+        model.addAttribute("genreFilter", genreFilter);
+        model.addAttribute("publisherFilter", publisherFilter);
+        model.addAttribute("fromDateFilter", fromDateFilter);
+        model.addAttribute("toDateFilter", toDateFilter);
+        model.addAttribute("fromYearFilter", fromYearFilter);
+        model.addAttribute("toYearFilter", toYearFilter);
     }
 
 }

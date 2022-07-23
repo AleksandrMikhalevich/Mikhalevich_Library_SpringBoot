@@ -1,6 +1,5 @@
 package by.it_academy.mikhalevich_library_springboot.filters;
 
-import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,8 +23,9 @@ public class BookFilter {
     private String authorFilter;
     private String genreFilter;
     private String publisherFilter;
-    private Date receiptDate1Filter;
-    private Date receiptDate2Filter;
-    private String yearOfPublishingFilter;
+    private String receiptDateFromFilter;
+    private String receiptDateToFilter;
+    private String yearOfPublishingFromFilter;
+    private String yearOfPublishingToFilter;
 
 }

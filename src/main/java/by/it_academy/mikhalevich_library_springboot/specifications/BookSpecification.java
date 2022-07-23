@@ -7,6 +7,7 @@ import javax.persistence.criteria.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Alex Mikhalevich
@@ -82,23 +83,25 @@ public class BookSpecification {
         };
     }
 
-    public static Specification<Book> getBookByReceiptDateSpec(Date fromDate, Date toDate) {
+    public static Specification<Book> getBookByReceiptDateSpec(String fromDate, String toDate) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();
-            if (fromDate != null && toDate != null) {
-                predicatesMain.add(criteriaBuilder.between(root.get(Book_.RECEIPT_DATE), fromDate, toDate));
+            if (fromDate != null && toDate != null && !Objects.equals(fromDate, "") && !Objects.equals(toDate, "")) {
+                Date from = Date.valueOf(fromDate);
+                Date to = Date.valueOf(toDate);
+                predicatesMain.add(criteriaBuilder.between(root.get(Book_.RECEIPT_DATE), from, to));
             }
             return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
         };
     }
 
-    public static Specification<Book> getBookByYearOfPublishingSpec(String year1, String year2) {
+    public static Specification<Book> getBookByYearOfPublishingSpec(String fromYear, String toYear) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();
-            if (year1 != null && year2 != null) {
-                int numYear1 = Integer.parseInt(year1);
-                int numYear2 = Integer.parseInt(year2);
-                predicatesMain.add(criteriaBuilder.between(root.get(Book_.YEAR_OF_PUBLISHING), numYear1, numYear2));
+            if (fromYear != null && toYear != null && !Objects.equals(fromYear, "") && !Objects.equals(toYear, "")) {
+                int numFromYear = Integer.parseInt(fromYear);
+                int numToYear = Integer.parseInt(toYear);
+                predicatesMain.add(criteriaBuilder.between(root.get(Book_.YEAR_OF_PUBLISHING), numFromYear, numToYear));
             }
             return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));
         };
