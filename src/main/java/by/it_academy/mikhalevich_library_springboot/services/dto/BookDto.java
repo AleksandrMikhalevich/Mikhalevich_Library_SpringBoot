@@ -25,6 +25,7 @@ public class BookDto implements Serializable {
     private final PublisherDto publisher;
     private final String yearOfPublishing;
     private final Date receiptDate;
+    private final DBFileDto dbFileDto;
 
     @Data
     public static class AuthorDto implements Serializable {

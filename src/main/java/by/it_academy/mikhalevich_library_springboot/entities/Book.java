@@ -57,6 +57,9 @@ public class Book {
     @Column(name = "receipt_date")
     private Date receiptDate;
 
+    @OneToOne (mappedBy = "book", cascade = CascadeType.ALL)
+    private DBFile dbFile;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

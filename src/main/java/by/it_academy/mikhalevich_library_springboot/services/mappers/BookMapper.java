@@ -2,10 +2,7 @@ package by.it_academy.mikhalevich_library_springboot.services.mappers;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Book;
 import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 /**
  * @author Alex Mikhalevich
@@ -14,10 +11,13 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 @Mapper(componentModel = "spring")
 public interface BookMapper {
 
+    @Mapping(target = "dbFile", source = "dbFileDto")
     Book bookDtoToBook(BookDto bookDto);
 
+    @Mapping(target = "dbFileDto", source = "dbFile")
     BookDto bookToBookDto(Book book);
 
+    @Mapping(target = "dbFile", source = "dbFileDto")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Book updateBookFromBookDto(BookDto bookDto, @MappingTarget Book book);
 }
