@@ -18,6 +18,10 @@ public interface AdditionalMapper {
 
     BookDto.GenreDto toBookGenreDto(GenreDto genreDto);
 
+    @Mapping(target = "address", source = ".")
     BookDto.PublisherDto toBookPublisherDto(PublisherDto publisherDto);
+
+    @Mapping(target = "address", source = ".")
+    AuthorDto.PublisherDto toAuthorPublisherDto(PublisherDto publisherDto);
 }
 
