@@ -1,5 +1,6 @@
 package by.it_academy.mikhalevich_library_springboot.services.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.util.Set;
  * @created 2022-07-09 15:22
  */
 @Data
+@Builder
 public class AuthorDto implements Serializable {
     private final Integer id;
     private final String firstName;

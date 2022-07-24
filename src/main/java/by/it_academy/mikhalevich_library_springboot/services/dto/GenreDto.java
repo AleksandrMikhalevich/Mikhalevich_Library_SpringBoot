@@ -2,6 +2,8 @@ package by.it_academy.mikhalevich_library_springboot.services.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.Set;
@@ -13,7 +15,11 @@ import java.util.Set;
 @Data
 public class GenreDto implements Serializable {
     private final Integer id;
+    @NotBlank
+    @NotEmpty(message = "заполните поле")
     private final String name;
+    @NotBlank
+    @NotEmpty(message = "заполните поле")
     private final String description;
     private final Set<BookDto> books;
 
