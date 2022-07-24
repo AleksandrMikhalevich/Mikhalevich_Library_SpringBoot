@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Авторы</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Авторы</li>
+        </ol>
+    </nav>
+</div>
+<div class="w-90 p-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
+            aria-expanded="false" aria-controls="collapseFilters">
+        Найти автора
+    </button>
+</div>
+<div class="collapsing" id="collapseFilters">
+    <div class="card card-body">
+        <form class="row g-3" th:action="@{'/authors/page/' + ${currentPage}}">
+            <div class="col-md-4 mb-3">
+                <label for="firstNameFilterInput" class="form-label">По имени:</label>
+                <input type="text" id="firstNameFilterInput" name="firstNameFilter" class="form-control"
+                       th:placeholder="${firstNameFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="secondNameFilterInput" class="form-label">По отчеству:</label>
+                <input type="text" id="secondNameFilterInput" name="secondNameFilter" class="form-control"
+                       th:placeholder="${secondNameFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="surnameFilterInput" class="form-label">По фамилии:</label>
+                <input type="text" id="surnameFilterInput" name="surnameFilter" class="form-control"
+                       th:placeholder="${surnameFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="countryFilterInput" class="form-label">По стране:</label>
+                <input type="text" id="countryFilterInput" name="countryFilter" class="form-control"
+                       th:placeholder="${countryFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="bookFilterInput" class="form-label">По книге:</label>
+                <input type="text" id="bookFilterInput" name="bookFilter" class="form-control"
+                       th:placeholder="${bookFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="publisherFilterInput" class="form-label">По издательству:</label>
+                <input type="text" id="publisherFilterInput" name="publisherFilter" class="form-control"
+                       th:placeholder="${publisherFilter}">
+            </div>
+            <div class="col-12">
+                <input type="hidden" name="pageSize" th:value="${pageSize}">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+        <p>
+        <form th:action="@{/authors}">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary">Сбросить</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="w-90 p-3" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+    <form th:action="@{/authors/new-author}">
+        <button type="submit" class="btn btn-outline-success">Добавить автора</button>
+    </form>
+</div>
+<div class="w-90 p-3" style="text-align: center;">
+    <div th:switch="${authors}">
+        <h2 th:case="null">База данных авторов пока пуста!</h2>
+        <div th:case="*">
+            <h2>Авторы</h2>
+            <table class="table table-bordered table-hover">
+                <thead>
+                <tr>
+                    <th scope="col" class="align-middle"
+                        th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <th:block
+                                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                                or ${bookFilter != null} or ${publisherFilter != null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                        </th:block>
+                        <th:block
+                                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                                or ${bookFilter == null} or ${publisherFilter == null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                        </th:block>
+                    </th>
+                    <th scope="col" class="align-middle">
+                        <th:block
+                                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                                or ${bookFilter != null} or ${publisherFilter != null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a>
+                        </th:block>
+                        <th:block
+                                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                                or ${bookFilter == null} or ${publisherFilter == null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a>
+                        </th:block>
+                    </th>
+                    <th scope="col" class="align-middle">
+                        <th:block
+                                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                                or ${bookFilter != null} or ${publisherFilter != null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=firstName&sortDir=' + ${reverseSortDir}}">Имя</a>
+                        </th:block>
+                        <th:block
+                                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                                or ${bookFilter == null} or ${publisherFilter == null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=firstName&sortDir=' + ${reverseSortDir}}">Имя</a>
+                        </th:block>
+                    </th>
+                    <th scope="col" class="align-middle">
+                        <th:block
+                                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                                or ${bookFilter != null} or ${publisherFilter != null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=secondName&sortDir=' + ${reverseSortDir}}">Отчество</a>
+                        </th:block>
+                        <th:block
+                                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                                or ${bookFilter == null} or ${publisherFilter == null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=secondName&sortDir=' + ${reverseSortDir}}">Отчество</a>
+                        </th:block>
+                    </th>
+                    <th scope="col" class="align-middle">
+                        <th:block
+                                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                                or ${bookFilter != null} or ${publisherFilter != null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=countrys&sortDir=' + ${reverseSortDir}}">Страна</a>
+                        </th:block>
+                        <th:block
+                                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                                or ${bookFilter == null} or ${publisherFilter == null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=country&sortDir=' + ${reverseSortDir}}">Страна</a>
+                        </th:block>
+                    </th>
+                    <th scope="col" class="align-middle">
+                        <th:block
+                                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                                or ${bookFilter != null} or ${publisherFilter != null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=publishers.name&sortDir=' + ${reverseSortDir}}">Издательства</a>
+                        </th:block>
+                        <th:block
+                                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                                or ${bookFilter == null} or ${publisherFilter == null}">
+                            <a th:href="@{'/authors/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=publishers.name&sortDir=' + ${reverseSortDir}}">Издательства</a>
+                        </th:block>
+                    </th>
+                    <th scope="col" class="align-middle">Книги</th>
+                    <th th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}"
+                        colspan="2" class="align-middle">Действия
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="author : ${authors}">
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}" th:text="${author.id}"></td>
+                    <td th:text="${author.surname}"></td>
+                    <td th:text="${author.firstName}"></td>
+                    <td th:text="${author.secondName}"></td>
+                    <td th:text="${author.country}"></td>
+                    <td>
+                        <th:block th:each="publisher : ${author.publishers}">
+                            <div th:text="${publisher.name}">
+                            </div>
+                        </th:block>
+                    </td>
+                    <td>
+                        <th:block th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                            <div th:if="${author.books == null} or ${author.books.isEmpty()}">
+                                <a th:href="@{/books/new-book}">Добавить автору книгу</a>
+                            </div>
+                        </th:block>
+                        <th:block th:each="book : ${author.books}">
+                            <div th:text="${book.title} + ', ' + ${book.yearOfPublishing}">
+                            </div>
+                        </th:block>
+                    </td>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:method="get"
+                              th:action="@{/authors/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${author.id}, page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
+                            <button type="submit" class="btn btn-outline-warning">Редактировать</button>
+                        </form>
+                    <td th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                        <form th:method="post"
+                              th:action="@{/authors/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${author.id}, page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
+                            <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteAuthorModal"
+                                    th:attr="data-bs-target='#deleteAuthorModal' + ${author.id}">
+                                Удалить
+                            </button>
+                            <div class="modal modal-delete" th:id="deleteAuthorModal + ${author.id}" tabindex="-1"
+                                 aria-labelledby="deleteBookLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="deleteAuthorLabel">Подтверждение удаления
+                                                автора</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Закрыть"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <span style="text-transform:uppercase" class="text-danger">
+                                                Вниманию администратора!<br> Удаление автора
+                                                из базы данных библиотеки приведет к удалению всех книг данного автора.</span>
+                                            <p>
+                                            <p>Вы действительно хотите удалить выбранного автора?</p>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                                Отмена
+                                            </button>
+                                            <button type="submit" class="btn btn-danger">Удалить</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<nav aria-label="paginationAuthors">
+    <div style="text-align: center;">
+        <th:block
+                th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                 or ${bookFilter != null} or ${publisherFilter != null}">
+            <form
+                    th:action="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                <div th:if="${pageSize == 5}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option selected value="5">5 авторов</option>
+                            <option value="10">10 авторов</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <input type="hidden" name="firstNameFilter" th:value="${firstNameFilter}">
+                        <input type="hidden" name="secondNameFilter" th:value="${secondNameFilter}">
+                        <input type="hidden" name="surnameFilter" th:value="${surnameFilter}">
+                        <input type="hidden" name="countryFilter" th:value="${countryFilter}">
+                        <input type="hidden" name="bookFilter" th:value="${bookFilter}">
+                        <input type="hidden" name="publisherFilter" th:value="${publisherFilter}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+                <div th:if="${pageSize == 10}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option value="5">5 авторов</option>
+                            <option selected value="10">10 авторов</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <input type="hidden" name="firstNameFilter" th:value="${firstNameFilter}">
+                        <input type="hidden" name="secondNameFilter" th:value="${secondNameFilter}">
+                        <input type="hidden" name="surnameFilter" th:value="${surnameFilter}">
+                        <input type="hidden" name="countryFilter" th:value="${countryFilter}">
+                        <input type="hidden" name="bookFilter" th:value="${bookFilter}">
+                        <input type="hidden" name="publisherFilter" th:value="${publisherFilter}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+            </form>
+        </th:block>
+        <th:block
+                th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                 or ${bookFilter == null} or ${publisherFilter == null}">
+            <form th:action="@{'/authors/page/'+ ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                <div th:if="${pageSize == 5}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option selected value="5">5 авторов</option>
+                            <option value="10">10 авторов</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+                <div th:if="${pageSize == 10}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option value="5">5 авторов</option>
+                            <option selected value="10">10 авторов</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+            </form>
+        </th:block>
+    </div>
+    <p>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <th:block
+                    th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                 or ${bookFilter != null} or ${publisherFilter != null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/authors/page/'+ ${1} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
+            </th:block>
+            <th:block
+                    th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                 or ${bookFilter == null} or ${publisherFilter == null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/authors/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
+            </th:block>
+        </li>
+        <li class="page-item">
+            <th:block
+                    th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                 or ${bookFilter != null} or ${publisherFilter != null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/authors/page/' + ${currentPage - 1} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
+            </th:block>
+            <th:block
+                    th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                 or ${bookFilter == null} or ${publisherFilter == null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/authors/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
+            </th:block>
+        </li>
+        <li class="d-flex flex-row page-item active" aria-current="page">
+            <th:block
+                    th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                 or ${bookFilter != null} or ${publisherFilter != null}">
+                            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a class="page-link" th:if="${i != currentPage}"
+           th:href="@{'/authors/page/' + ${i} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+        </a>
+        <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+        </span>
+            </th:block>
+            <th:block
+                    th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                 or ${bookFilter == null} or ${publisherFilter == null}">
+                            <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a class="page-link" th:if="${i != currentPage}"
+           th:href="@{'/authors/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+        </a>
+        <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+        </span>
+            </th:block>
+        </li>
+        <li class="page-item">
+            <th:block
+                    th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                 or ${bookFilter != null} or ${publisherFilter != null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/authors/page/' + ${currentPage + 1} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
+            </th:block>
+            <th:block
+                    th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                 or ${bookFilter == null} or ${publisherFilter == null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/authors/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
+            </th:block>
+        </li>
+        <li class="page-item">
+            <th:block
+                    th:if="${firstNameFilter != null} or ${secondNameFilter != null} or ${surnameFilter != null} or ${countryFilter != null}
+                 or ${bookFilter != null} or ${publisherFilter != null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/authors/page/' + ${totalPages} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
+                         + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
+            </th:block>
+            <th:block
+                    th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
+                 or ${bookFilter == null} or ${publisherFilter == null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/authors/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
+            </th:block>
+        </li>
+    </ul>
+    <div style="text-align: center;">
+        Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+    </div>
+</nav>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

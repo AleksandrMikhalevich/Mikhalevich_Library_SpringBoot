@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/authorValidation.js}"></script>
+    <title>Новый жанр</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item"><a href="/genres" class="link-info">Жанры</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Добавление жанра</li>
+        </ol>
+    </nav>
+</div>
+<div style="text-align: center;">
+    <h2>Добавить жанр</h2>
+</div>
+<div class="container">
+    <div class="container">
+        <form name="formGenre" th:method="post" th:action="@{/genres/add-genre}" th:object="${genre}">
+            <fieldset>
+                <div class="mb-3">
+                    <label for="nameInput" class="form-label">Название</label>
+                    <input type="text" id="nameInput" name="name" th:field="*{name}" class="form-control" placeholder="Название">
+                    <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+                </div>
+                <div class="mb-3">
+                    <label for="descriptionInput" class="form-label">Описание</label>
+                    <input type="text" id="descriptionInput" name="description" th:field="*{description}" class="form-control" placeholder="Описание">
+                    <span class="text-danger" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-outline-success">Сохранить</button>
+    </form>
+    </div>
+    <p>
+    <div style="text-align: center;">
+        <form th:action="@{/genres}">
+            <button type="submit" class="btn btn-secondary">Назад</button>
+        </form>
+    </div>
+    <p>
+</div>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

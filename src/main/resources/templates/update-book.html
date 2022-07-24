@@ -100,7 +100,7 @@
             </div>
         </fieldset>
     </form>
-    <form name="addBook" th:method="post" th:action="@{/books/update-book/{id}(id=${book.id})}" onsubmit="return validateForm()">
+    <form name="bookForm" th:method="post" th:action="@{/books/update-book/{id}(id=${book.id})}" onsubmit="return validateBookForm()">
         <input type="hidden" name="id" th:value="${book.id}">
         <th:block th:if="${bookAuthors == null}">
             <div th:each="author : ${book.authors}">

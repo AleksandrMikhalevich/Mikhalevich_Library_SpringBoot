@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
-    <title>Выбор авторов для книги</title>
+    <title>Выбор издательства для книги</title>
 </head>
 <body class="d-flex flex-column min-vh-100">
 <div th:insert="~{header :: header}"></div>
@@ -32,19 +32,19 @@
                             <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.country&sortDir=' + ${reverseSortDir}}">Страна</a>
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressCountry&sortDir=' + ${reverseSortDir}}">Страна</a>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.city&sortDir=' + ${reverseSortDir}}">Город</a>
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressCity&sortDir=' + ${reverseSortDir}}">Город</a>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.street&sortDir=' + ${reverseSortDir}}">Улица</a>
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressStreet&sortDir=' + ${reverseSortDir}}">Улица</a>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.house&sortDir=' + ${reverseSortDir}}">Дом</a>
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressHouse&sortDir=' + ${reverseSortDir}}">Дом</a>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=address.zipcode&sortDir=' + ${reverseSortDir}}">Почтовый
+                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressZipcode&sortDir=' + ${reverseSortDir}}">Почтовый
                                 индекс</a>
                         </th>
                         <th scope="col" class="align-middle">Выбор</th>
@@ -54,11 +54,11 @@
                     <tr th:each="publisher : ${publishers}">
                         <td th:text="${publisher.id}"></td>
                         <td th:text="${publisher.name}"></td>
-                        <td th:text="${publisher.address.country}"></td>
-                        <td th:text="${publisher.address.city}"></td>
-                        <td th:text="${publisher.address.street}"></td>
-                        <td th:text="${publisher.address.house}"></td>
-                        <td th:text="${publisher.address.zipcode}"></td>
+                        <td th:text="${publisher.addressCountry}"></td>
+                        <td th:text="${publisher.addressCity}"></td>
+                        <td th:text="${publisher.addressStreet}"></td>
+                        <td th:text="${publisher.addressHouse}"></td>
+                        <td th:text="${publisher.addressZipcode}"></td>
                         <td>
                             <div class="form-check d-flex justify-content-center">
                                 <input class="form-check-input" type="radio" name="publisherId"

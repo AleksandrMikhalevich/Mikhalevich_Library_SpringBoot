@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" th:src="@{/js/authorValidation.js}"></script>
+    <title>Редактирование автора</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item">
+                <a th:href="@{'/authors/page/' + ${page} + '?pageSize=' + ${size} + '&sortField=' + ${field} + '&sortDir=' + ${dir}}" class="link-info">
+                    Авторы</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Редактирование автора</li>
+        </ol>
+    </nav>
+</div>
+<div style="text-align: center;">
+    <h2>Редактировать автора</h2>
+</div>
+<div class="container">
+    <form>
+        <fieldset>
+            <legend>Выбор издательств</legend>
+            <div class="input-group mb-3">
+                <th:block th:if="${authorPublishers == null}">
+                    <th:block th:each="publisher : ${author.publishers}">
+                        <label>
+                            <input type="text" class="form-control" disabled="disabled" th:placeholder="${publisher.name}"
+                                   aria-describedby="button-addon1">
+                        </label>
+                    </th:block>
+                </th:block>
+                <th:block th:if="${authorPublishers != null}">
+                    <th:block th:each="publisher : ${authorPublishers}">
+                        <label>
+                            <input type="text" class="form-control" disabled="disabled" th:placeholder="${publisher.name}"
+                                   aria-describedby="button-addon1">
+                        </label>
+                    </th:block>
+                </th:block>
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon1"
+                        th:formaction="|@{/authors/edit-author/choose-publishers}|">Выбрать
+                </button>
+            </div>
+        </fieldset>
+    </form>
+    <form name="authorForm" th:method="POST" th:action="@{/authors/update-author/{id}(id=${author.id})}" onsubmit="return validateAuthorForm()">
+        <input type="hidden" name="id" th:value="${author.id}">
+        <th:block th:if="${authorPublishers == null}">
+            <th:block th:each="publisher : ${author.publishers}">
+                <input type="hidden" name="publishersIds" th:value="${publisher.id}">
+            </th:block>
+        </th:block>
+        <th:block th:if="${authorPublishers != null}">
+            <div th:each="publisher : ${authorPublishers}">
+                <input type="hidden" name="publishersIds" th:value="${publisher.id}">
+            </div>
+        </th:block>
+        <fieldset>
+            <legend>Персональная информация</legend>
+            <div class="mb-3">
+                <label for="surnameInput" class="form-label">Фамилия</label>
+                <input type="text" id="surnameInput" name="surname" class="form-control" th:value="${author.surname}">
+            </div>
+            <div class="mb-3">
+                <label for="firstNameInput" class="form-label">Имя</label>
+                <input type="text" id="firstNameInput" name="firstName" class="form-control" th:value="${author.firstName}">
+            </div>
+            <div class="mb-3">
+                <label for="secondNameInput" class="form-label">Отчество</label>
+                <input type="text" id="secondNameInput" name="secondName" class="form-control" th:value="${author.secondName}">
+            </div>
+            <div class="mb-3">
+                <label for="countryInput" class="form-label">Страна</label>
+                <input type="text" id="countryInput" name="country" class="form-control" th:value="${author.country}">
+            </div>
+        </fieldset>
+        <input type="hidden" name="pageNumber" th:value="${page}">
+        <input type="hidden" name="pageSize" th:value="${size}">
+        <input type="hidden" name="sortField" th:value="${field}">
+        <input type="hidden" name="sortDir" th:value="${dir}">
+        <button type="submit" class="btn btn-outline-success">Сохранить</button>
+    </form>
+    <p>
+    <div style="text-align: center;">
+        <form th:action="@{/authors/page/{page}(page=${page})}">
+            <input type="hidden" name="pageSize" th:value="${size}">
+            <input type="hidden" name="sortField" th:value="${field}">
+            <input type="hidden" name="sortDir" th:value="${dir}">
+            <button type="submit" class="btn btn-secondary">Назад</button>
+        </form>
+    </div>
+    <p>
+</div>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

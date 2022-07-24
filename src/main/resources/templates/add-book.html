@@ -31,7 +31,7 @@
                 <th:block th:if="${bookAuthors != null}">
                     <th:block th:each="author : ${bookAuthors}">
                         <label>
-                            <input type="text" class="form-control"
+                            <input type="text" class="form-control" disabled="disabled"
                                    th:placeholder="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}"
                                    aria-describedby="button-addon1">
                         </label>
@@ -53,7 +53,7 @@
                 <th:block th:if="${bookGenres != null}">
                     <th:block th:each="genre : ${bookGenres}">
                         <label>
-                            <input type="text" class="form-control" th:placeholder="${genre.name}"
+                            <input type="text" class="form-control" disabled="disabled" th:placeholder="${genre.name}"
                                    aria-describedby="button-addon2">
                         </label>
                     </th:block>
@@ -73,7 +73,7 @@
                 </th:block>
                 <th:block th:if="${bookPublisher != null}">
                     <label>
-                        <input type="text" class="form-control" th:placeholder="${bookPublisher.name}"
+                        <input type="text" class="form-control" disabled="disabled" th:placeholder="${bookPublisher.name}"
                                aria-describedby="button-addon3">
                     </label>
                 </th:block>
@@ -83,7 +83,7 @@
             </div>
         </fieldset>
     </form>
-    <form name="addBook" th:method="POST" th:action="@{/books/add-book}" onsubmit="return validateForm()">
+    <form name="bookForm" th:method="POST" th:action="@{/books/add-book}" onsubmit="return validateBookForm()">
         <input type="hidden" name="authors" th:value="${bookAuthors}">
         <th:block th:each="author : ${bookAuthors}">
             <input type="hidden" name="authorsIds" th:value="${author.id}">
@@ -108,7 +108,7 @@
             </div>
             <div class="mb-3">
                 <label for="summaryInput" class="form-label">Аннотация</label>
-                <input type="text" id="summaryInput" name="summary" class="form-control" placeholder="Аннотация">
+                <input type="text" id="summaryInput" name="summary" class="form-control" placeholder="Аннотация (необязательно)">
             </div>
             <div class="mb-3">
                 <label for="receiptDateInput" class="form-label">Дата поступления</label>
