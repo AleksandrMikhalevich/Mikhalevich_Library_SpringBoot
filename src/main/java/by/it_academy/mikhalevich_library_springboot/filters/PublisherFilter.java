@@ -1,13 +1,9 @@
 package by.it_academy.mikhalevich_library_springboot.filters;
 
-import by.it_academy.mikhalevich_library_springboot.services.dto.AddressDto;
-import by.it_academy.mikhalevich_library_springboot.services.dto.PublisherDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 /**
  * @author Alex Mikhalevich
@@ -20,8 +16,9 @@ import java.util.Set;
 public class PublisherFilter {
 
     private String nameFilter;
-//    TODO filters
-    private AddressDto addressFilter;
-    private Set<PublisherDto.BookDto> books;
-    private Set<PublisherDto.AuthorDto> authors;
+    private String countryFilter;
+    private String cityFilter;
+    private String streetFilter;
+    private String houseFilter;
+    private String zipcodeFilter;
 }

@@ -19,7 +19,6 @@ import java.util.Set;
 public class GenreFilter {
 
     private String nameFilter;
-//    TODO filters
     private String descriptionFilter;
-    private Set<GenreDto.BookDto> books;
+    private String bookFilter;
 }

@@ -17,10 +17,9 @@ import lombok.NoArgsConstructor;
 public class AuthorFilter {
 
     private String firstNameFilter;
-    //    TODO filters
     private String secondNameFilter;
     private String surnameFilter;
     private String countryFilter;
-    private AuthorDto.BookDto books;
-    private AuthorDto.PublisherDto publishers;
+    private String bookFilter;
+    private String publisherFilter;
 }
