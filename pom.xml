@@ -15,7 +15,7 @@
     <description>Mikhalevich_Library_SpringBoot</description>
     <properties>
         <java.version>11</java.version>
-        <org.hibernate.validator.version>7.0.4.Final</org.hibernate.validator.version>
+        <org.hibernate.validator.version>6.0.21.Final</org.hibernate.validator.version>
         <org.mapstruct.version>1.5.2.Final</org.mapstruct.version>
         <org.hibernate.jpamodelgen.version>5.4.0.Final</org.hibernate.jpamodelgen.version>
     </properties>
@@ -72,7 +72,6 @@
         <dependency>
             <groupId>javax.validation</groupId>
             <artifactId>validation-api</artifactId>
-            <version>2.0.1.Final</version>
         </dependency>
         <dependency>
             <groupId>org.hibernate.validator</groupId>
