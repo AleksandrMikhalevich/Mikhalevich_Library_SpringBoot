@@ -23,4 +23,6 @@ public interface PublisherService {
     void updatePublisher(PublisherDto publisherDto);
 
     void deletePublisherById(int id);
+
+    List<PublisherDto> choosePublishers(Integer[] publishersIds);
 }

@@ -38,6 +38,12 @@ public class GenreServiceImpl implements GenreService {
                 Specification
                         .where(Optional.ofNullable(genreFilter.getNameFilter())
                                 .map(GenreSpecification::getGenreByNameSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(genreFilter.getDescriptionFilter())
+                                .map(GenreSpecification::getGenreByDescriptionSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(genreFilter.getBookFilter())
+                                .map(GenreSpecification::getGenreByBookTitleSpec)
                                 .orElse(null));
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
@@ -48,7 +54,7 @@ public class GenreServiceImpl implements GenreService {
     @Override
     public List<GenreDto> findAllGenres() {
         return genreRepository.findAll().stream()
-                .map(genreMapper ::genreToGenreDto)
+                .map(genreMapper::genreToGenreDto)
                 .collect(Collectors.toList());
     }
 
@@ -76,8 +82,8 @@ public class GenreServiceImpl implements GenreService {
     public List<GenreDto> chooseGenres(Integer[] genresIds) {
         List<Integer> listOfGenreIds = new ArrayList<>();
         Collections.addAll(listOfGenreIds, genresIds);
-        return genreRepository.findAllById(listOfGenreIds).stream().
-                map(genreMapper::genreToGenreDto)
+        return genreRepository.findAllById(listOfGenreIds).stream()
+                .map(genreMapper::genreToGenreDto)
                 .collect(Collectors.toList());
     }
 }

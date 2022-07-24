@@ -1,5 +1,6 @@
 package by.it_academy.mikhalevich_library_springboot.services.impl;
 
+import by.it_academy.mikhalevich_library_springboot.entities.Author;
 import by.it_academy.mikhalevich_library_springboot.entities.Publisher;
 import by.it_academy.mikhalevich_library_springboot.filters.PublisherFilter;
 import by.it_academy.mikhalevich_library_springboot.repositories.PublisherRepository;
@@ -14,7 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,6 +41,21 @@ public class PublisherServiceImpl implements PublisherService {
                 Specification
                         .where(Optional.ofNullable(publisherFilter.getNameFilter())
                                 .map(PublisherSpecification::getPublisherByNameSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(publisherFilter.getCountryFilter())
+                                .map(PublisherSpecification::getPublisherByCountrySpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(publisherFilter.getCityFilter())
+                                .map(PublisherSpecification::getPublisherByCitySpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(publisherFilter.getStreetFilter())
+                                .map(PublisherSpecification::getPublisherByStreetSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(publisherFilter.getHouseFilter())
+                                .map(PublisherSpecification::getPublisherByHouseSpec)
+                                .orElse(null))
+                        .and(Optional.ofNullable(publisherFilter.getZipcodeFilter())
+                                .map(PublisherSpecification::getPublisherByZipcodeSpec)
                                 .orElse(null));
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortField).ascending() :
                 Sort.by(sortField).descending();
@@ -67,7 +86,23 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
+    @Transactional
     public void deletePublisherById(int id) {
+        Publisher publisher = publisherRepository.findById(id).orElse(null);
+        assert publisher != null;
+        for (Author author : publisher.getAuthors()) {
+            publisher.removeAuthor(author);
+        }
+        publisherRepository.save(publisher);
         publisherRepository.deleteById(id);
+    }
+
+    @Override
+    public List<PublisherDto> choosePublishers(Integer[] publishersIds) {
+        List<Integer> listOfPublisherIds = new ArrayList<>();
+        Collections.addAll(listOfPublisherIds, publishersIds);
+        return publisherRepository.findAllById(listOfPublisherIds).stream()
+                .map(publisherMapper::publisherToPublisherDto)
+                .collect(Collectors.toList());
     }
 }

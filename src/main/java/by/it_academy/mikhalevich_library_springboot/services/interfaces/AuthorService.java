@@ -18,9 +18,9 @@ public interface AuthorService {
 
     AuthorDto findAuthorById(int id);
 
-    void addAuthor(AuthorDto authorDto);
+    void addAuthor(Integer[] publishersIds, String surname, String firstName, String secondName, String country);
 
-    void updateAuthor(AuthorDto authorDto);
+    void updateAuthor(int id, Integer[] publishersIds, String surname, String firstName, String secondName, String country);
 
     void deleteAuthorById(int id);
 
