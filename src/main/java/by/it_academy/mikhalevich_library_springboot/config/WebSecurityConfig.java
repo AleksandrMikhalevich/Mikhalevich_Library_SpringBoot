@@ -2,7 +2,6 @@ package by.it_academy.mikhalevich_library_springboot.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -10,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.access.AccessDeniedHandler;
 
 /**
  * @author Alex Mikhalevich
@@ -29,11 +27,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/books", "/books/**", "/img/logo.jpg").permitAll()
-
-//                .antMatchers("/books/*").hasAnyAuthority("ADMIN", "USER")
-//                .antMatchers("/books/*").hasAuthority("ADMIN")
-//                .antMatchers("/user/**").hasAuthority("USER")
+                .antMatchers("/", "/index", "/books", "/books/page/*", "/authors", "/authors/page/*",
+                        "/genres", "/genres/page/*", "/img/logo.jpg").permitAll()
+                .antMatchers("/books/new-book", "/books/new-book/**", "/books/edit-book",
+                        "/books/edit-book/**", "/books/page/*/*", "/authors/new-author", "/authors/new-author/**",
+                        "/authors/edit-author", "/authors/edit-author/**", "/authors/page/*/*", "/genres/new-genre",
+                        "/genres/edit-genre", "/genres/page/*/*", "/publishers", "/publishers/page/*/*", "/publishers/**",
+                        "/uploadFile").hasAuthority("ADMIN")
+                .antMatchers("/downloadFile", "/downloadFile/**").hasAnyAuthority("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
