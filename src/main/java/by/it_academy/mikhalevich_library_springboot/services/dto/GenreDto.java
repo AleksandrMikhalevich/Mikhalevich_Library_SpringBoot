@@ -15,11 +15,9 @@ import java.util.Set;
 @Data
 public class GenreDto implements Serializable {
     private final Integer id;
-    @NotBlank
-    @NotEmpty(message = "заполните поле")
+    @NotBlank(message = "Необходимо заполнить поле")
     private final String name;
-    @NotBlank
-    @NotEmpty(message = "заполните поле")
+    @NotBlank(message = "Необходимо заполнить поле")
     private final String description;
     private final Set<BookDto> books;
 

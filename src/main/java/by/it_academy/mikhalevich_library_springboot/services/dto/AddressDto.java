@@ -2,6 +2,7 @@ package by.it_academy.mikhalevich_library_springboot.services.dto;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
