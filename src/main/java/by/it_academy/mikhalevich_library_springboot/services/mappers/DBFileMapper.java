@@ -18,8 +18,4 @@ public interface DBFileMapper {
     @Mapping(target = "bookDto", source = "book")
     DBFileDto DBFileToDBFileDto(DBFile DBFile);
 
-
-    @Mapping(target = "book", source = "bookDto")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    DBFile updateDBFileFromDBFileDto(DBFileDto DBFileDto, @MappingTarget DBFile DBFile);
 }

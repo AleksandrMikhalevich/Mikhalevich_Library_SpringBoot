@@ -17,7 +17,4 @@ public interface BookMapper {
     @Mapping(target = "dbFileDto", source = "dbFile")
     BookDto bookToBookDto(Book book);
 
-    @Mapping(target = "dbFile", source = "dbFileDto")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Book updateBookFromBookDto(BookDto bookDto, @MappingTarget Book book);
 }

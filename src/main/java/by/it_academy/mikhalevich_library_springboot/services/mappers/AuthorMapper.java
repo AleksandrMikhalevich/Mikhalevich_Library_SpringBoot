@@ -18,7 +18,4 @@ public interface AuthorMapper {
 
     AuthorDto authorToAuthorDto(Author author);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Author updateAuthorFromAuthorDto(AuthorDto authorDto, @MappingTarget Author author);
-
 }

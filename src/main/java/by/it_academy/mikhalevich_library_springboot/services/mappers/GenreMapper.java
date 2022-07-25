@@ -18,6 +18,4 @@ public interface GenreMapper {
 
     GenreDto genreToGenreDto(Genre genre);
 
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Genre updateGenreFromGenreDto(GenreDto genreDto, @MappingTarget Genre genre);
 }

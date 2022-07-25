@@ -22,8 +22,4 @@ public interface PublisherMapper {
     @InheritInverseConfiguration(name = "publisherDtoToPublisher")
     PublisherDto publisherToPublisherDto(Publisher publisher);
 
-    @Mapping(target = "address", source = ".")
-    @InheritConfiguration(name = "publisherDtoToPublisher")
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Publisher updatePublisherFromPublisherDto(PublisherDto publisherDto, @MappingTarget Publisher publisher);
 }
