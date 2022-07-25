@@ -52,13 +52,6 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public List<GenreDto> findAllGenres() {
-        return genreRepository.findAll().stream()
-                .map(genreMapper::genreToGenreDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public GenreDto findGenreById(int id) {
         return genreRepository.findById(id).map(genreMapper::genreToGenreDto).orElse(null);
     }

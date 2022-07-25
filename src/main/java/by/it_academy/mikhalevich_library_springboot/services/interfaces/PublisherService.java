@@ -14,8 +14,6 @@ public interface PublisherService {
 
     Page<PublisherDto> findAllPublishersPaginatedSortedFiltered(PublisherFilter publisherFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    List<PublisherDto> findAllPublishers();
-
     PublisherDto findPublisherById(int id);
 
     void addPublisher(PublisherDto publisherDto);

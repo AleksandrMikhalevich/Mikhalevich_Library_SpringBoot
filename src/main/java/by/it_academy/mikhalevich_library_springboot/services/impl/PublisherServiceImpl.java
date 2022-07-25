@@ -34,7 +34,6 @@ public class PublisherServiceImpl implements PublisherService {
     private final PublisherRepository publisherRepository;
     private final PublisherMapper publisherMapper;
 
-
     @Override
     public Page<PublisherDto> findAllPublishersPaginatedSortedFiltered(PublisherFilter publisherFilter, int pageNumber, int pageSize, String sortField, String sortDirection) {
         Specification<Publisher> publisherSpecification =
@@ -61,13 +60,6 @@ public class PublisherServiceImpl implements PublisherService {
                 Sort.by(sortField).descending();
         Pageable paged = PageRequest.of(pageNumber - 1, pageSize, sort);
         return publisherRepository.findAll(publisherSpecification, paged).map(publisherMapper::publisherToPublisherDto);
-    }
-
-    @Override
-    public List<PublisherDto> findAllPublishers() {
-        return publisherRepository.findAll().stream()
-                .map(publisherMapper::publisherToPublisherDto)
-                .collect(Collectors.toList());
     }
 
     @Override

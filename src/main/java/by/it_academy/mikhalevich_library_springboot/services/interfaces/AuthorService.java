@@ -14,8 +14,6 @@ public interface AuthorService {
 
     Page<AuthorDto> findAllAuthorsPaginatedSortedFiltered(AuthorFilter authorFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    List<AuthorDto> findAllAuthors();
-
     AuthorDto findAuthorById(int id);
 
     void addAuthor(Integer[] publishersIds, String surname, String firstName, String secondName, String country);

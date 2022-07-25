@@ -65,13 +65,6 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public List<AuthorDto> findAllAuthors() {
-        return authorRepository.findAll().stream()
-                .map(authorMapper::authorToAuthorDto)
-                .collect(Collectors.toList());
-    }
-
-    @Override
     public AuthorDto findAuthorById(int id) {
         return authorRepository.findById(id).map(authorMapper::authorToAuthorDto).orElse(null);
     }

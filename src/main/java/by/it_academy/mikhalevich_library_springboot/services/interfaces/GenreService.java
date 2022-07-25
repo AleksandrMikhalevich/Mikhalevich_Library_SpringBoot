@@ -14,8 +14,6 @@ public interface GenreService {
 
     Page<GenreDto> findAllGenresPaginatedSortedFiltered(GenreFilter genreFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    List<GenreDto> findAllGenres();
-
     GenreDto findGenreById(int id);
 
     void addGenre(GenreDto genreDto);
