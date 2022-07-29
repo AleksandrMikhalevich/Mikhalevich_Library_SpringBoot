@@ -16,6 +16,60 @@
         </ol>
     </nav>
 </div>
+<div class="w-90 p-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
+            aria-expanded="false" aria-controls="collapseFilters">
+        Найти издательство
+    </button>
+</div>
+<div class="collapsing" id="collapseFilters">
+    <div class="card card-body">
+        <form class="row g-3" th:action="@{'/books/new-book/choose-publisher/page/' + ${currentPage}}">
+            <div class="col-md-4 mb-3">
+                <label for="nameFilterInput" class="form-label">По названию:</label>
+                <input type="text" id="nameFilterInput" name="nameFilter" class="form-control"
+                       th:placeholder="${nameFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="countryFilterInput" class="form-label">По стране:</label>
+                <input type="text" id="countryFilterInput" name="countryFilter" class="form-control"
+                       th:placeholder="${countryFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="cityFilterInput" class="form-label">По городу:</label>
+                <input type="text" id="cityFilterInput" name="cityFilter" class="form-control"
+                       th:placeholder="${cityFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="streetFilterInput" class="form-label">По улице:</label>
+                <input type="text" id="streetFilterInput" name="streetFilter" class="form-control"
+                       th:placeholder="${streetFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="houseFilterInput" class="form-label">По номеру дома:</label>
+                <input type="text" id="houseFilterInput" name="houseFilter" class="form-control"
+                       th:placeholder="${houseFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="zipcodeFilterInput" class="form-label">По почтовому индексу:</label>
+                <input type="text" id="zipcodeFilterInput" name="zipcodeFilter" class="form-control"
+                       th:placeholder="${zipcodeFilter}">
+            </div>
+            <div class="col-12">
+                <input type="hidden" name="pageSize" th:value="${pageSize}">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+        <p>
+        <form th:action="@{/books/new-book/choose-publisher}">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary">Сбросить</button>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="w-90 p-3" style="text-align: center;">
     <form th:action="@{/books/new-book/choose-publisher/confirm}">
         <div th:switch="${publishers}">
@@ -26,26 +80,102 @@
                     <thead>
                     <tr>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressCountry&sortDir=' + ${reverseSortDir}}">Страна</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=addressCountry&sortDir=' + ${reverseSortDir}}">Страна</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressCountry&sortDir=' + ${reverseSortDir}}">Страна</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressCity&sortDir=' + ${reverseSortDir}}">Город</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=addressCity&sortDir=' + ${reverseSortDir}}">Город</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressCity&sortDir=' + ${reverseSortDir}}">Город</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressStreet&sortDir=' + ${reverseSortDir}}">Улица</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=addressStreet&sortDir=' + ${reverseSortDir}}">Улица</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressStreet&sortDir=' + ${reverseSortDir}}">Улица</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressHouse&sortDir=' + ${reverseSortDir}}">Дом</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=addressHouse&sortDir=' + ${reverseSortDir}}">Дом</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressHouse&sortDir=' + ${reverseSortDir}}">Дом</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressZipcode&sortDir=' + ${reverseSortDir}}">Почтовый
-                                индекс</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
+                            or ${houseFilter != null} or ${zipcodeFilter != null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/'+ ${currentPage} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                            + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
+                            + '&zipcodeFilter=' + ${zipcodeFilter} + '&pageSize=' + ${pageSize} + '&sortField=addressZipcode&sortDir=' + ${reverseSortDir}}">Почтовый индекс</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
+                            or ${houseFilter == null} or ${zipcodeFilter == null}">
+                                <a th:href="@{'/books/new-book/choose-publisher/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=addressZipcode&sortDir=' + ${reverseSortDir}}">Почтовый индекс</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">Выбор</th>
                     </tr>

@@ -16,6 +16,45 @@
         </ol>
     </nav>
 </div>
+<div class="w-90 p-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
+            aria-expanded="false" aria-controls="collapseFilters">
+        Найти жанр
+    </button>
+</div>
+<div class="collapsing" id="collapseFilters">
+    <div class="card card-body">
+        <form class="row g-3" th:action="@{'/books/edit-book/choose-genres/page/' + ${currentPage}}">
+            <div class="col-md-4 mb-3">
+                <label for="nameFilterInput" class="form-label">По названию:</label>
+                <input type="text" id="nameFilterInput" name="nameFilter" class="form-control"
+                       th:placeholder="${nameFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="descriptionFilterInput" class="form-label">По описанию:</label>
+                <input type="text" id="descriptionFilterInput" name="descriptionFilter" class="form-control"
+                       th:placeholder="${descriptionFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="bookFilterInput" class="form-label">По книге:</label>
+                <input type="text" id="bookFilterInput" name="bookFilter" class="form-control"
+                       th:placeholder="${bookFilter}">
+            </div>
+            <div class="col-12">
+                <input type="hidden" name="pageSize" th:value="${pageSize}">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+        <p>
+        <form th:action="@{/books/edit-book/choose-genres}">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary">Сбросить</button>
+            </div>
+        </form>
+    </div>
+</div>
 <div class="w-90 p-3" style="text-align: center;">
     <form th:action="@{/books/edit-book/choose-genres/confirm}">
         <div th:switch="${genres}">
@@ -26,13 +65,37 @@
                     <thead>
                     <tr>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${descriptionFilter != null} or ${bookFilter != null}">
+                                <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?nameFilter=' + ${nameFilter} + '&descriptionFilter=' + ${descriptionFilter}
+                            + '&bookFilter=' + ${bookFilter} + '&pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${descriptionFilter == null} or ${bookFilter == null}">
+                                <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${descriptionFilter != null} or ${bookFilter != null}">
+                                <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?nameFilter=' + ${nameFilter} + '&descriptionFilter=' + ${descriptionFilter}
+                            + '&bookFilter=' + ${bookFilter} + '&pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${descriptionFilter == null} or ${bookFilter == null}">
+                                <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=name&sortDir=' + ${reverseSortDir}}">Название</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">
-                            <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=description&sortDir=' + ${reverseSortDir}}">Описание</a>
+                            <th:block
+                                    th:if="${nameFilter != null} or ${descriptionFilter != null} or ${bookFilter != null}">
+                                <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?nameFilter=' + ${nameFilter} + '&descriptionFilter=' + ${descriptionFilter}
+                            + '&bookFilter=' + ${bookFilter} + '&pageSize=' + ${pageSize} + '&sortField=description&sortDir=' + ${reverseSortDir}}">Описание</a>
+                            </th:block>
+                            <th:block
+                                    th:if="${nameFilter == null} or ${descriptionFilter == null} or ${bookFilter == null}">
+                                <a th:href="@{'/books/edit-book/choose-genres/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=description&sortDir=' + ${reverseSortDir}}">Описание</a>
+                            </th:block>
                         </th>
                         <th scope="col" class="align-middle">Выбор</th>
                     </tr>
