@@ -15,7 +15,6 @@ import java.util.List;
 public class AuthorSpecification {
 
     public static Specification<Author> getAuthorByFirstNameSpec(String firstName) {
-        System.out.println(firstName);
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();
             if (firstName != null) {
