@@ -4,10 +4,8 @@ import by.it_academy.mikhalevich_library_springboot.filters.AuthorFilter;
 import by.it_academy.mikhalevich_library_springboot.filters.BookFilter;
 import by.it_academy.mikhalevich_library_springboot.filters.GenreFilter;
 import by.it_academy.mikhalevich_library_springboot.filters.PublisherFilter;
-import by.it_academy.mikhalevich_library_springboot.services.dto.AuthorDto;
-import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
-import by.it_academy.mikhalevich_library_springboot.services.dto.GenreDto;
-import by.it_academy.mikhalevich_library_springboot.services.dto.PublisherDto;
+import by.it_academy.mikhalevich_library_springboot.services.dto.*;
+import by.it_academy.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.AuthorService;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.BookService;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.GenreService;
@@ -35,15 +33,36 @@ import static by.it_academy.mikhalevich_library_springboot.constants.Constants.*
 @SessionAttributes(value = {"bookAuthors", "bookGenres", "bookPublisher", "book", "author", "page", "size", "field", "dir"})
 public class AppController {
 
-
     private final BookService bookService;
     private final AuthorService authorService;
     private final GenreService genreService;
     private final PublisherService publisherService;
+    private final UserDetailsServiceImpl userDetailsService;
 
     @GetMapping(value = {"/", "/index"})
     public String showMain() {
         return "index";
+    }
+
+    @GetMapping("/registration")
+    public String registerUser(@ModelAttribute("user") UserDto userDto) {
+        return "registration";
+    }
+
+    @PostMapping("/registration")
+    public String addUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "registration";
+        }
+        if (!user.getPassword().equals(user.getPasswordConfirm())){
+            model.addAttribute("passwordError", "Пароли не совпадают");
+            return "registration";
+        }
+        if (!userDetailsService.saveUser(user)){
+            model.addAttribute("loginError", "Пользователь с таким именем уже существует");
+            return "registration";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/books")
