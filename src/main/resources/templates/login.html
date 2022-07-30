@@ -11,38 +11,40 @@
 <div class="container">
     <div class="row justify-content-center" style="margin-top:20px">
         <div class="col-md-4 mb-3">
-            <form class="form-signin" action="/login" method="post">
+            <form class="form-signin" th:action="@{/login}" method="post">
                 <fieldset>
-                    <h2>Пожалуйста, войдите или зарегистрируйтесь</h2>
+                    <legend>Пожалуйста, войдите или зарегистрируйтесь</legend>
                     <div th:if="${param.error}">
                         <div class="alert alert-danger">
                             Некорректный логин или пароль.
                         </div>
                     </div>
-                    <div th:if="${param.logout}">
-                        <div class="alert alert-info">
-                            Произведен выход.
-                        </div>
-                    </div>
                     <div class="form-group">
                         <label for="login">
-                        </label><input type="text" name="login" id="login" class="form-control input-lg"
-                                       placeholder="Login" required="required"/>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">
-                        </label><input type="email" name="email" id="email" class="form-control input-lg"
-                                       placeholder="Email" required="required"/>
+                        </label><input type="text" name="username" id="login" class="form-control input-lg"
+                                       placeholder="Логин" required="required"/>
                     </div>
                     <div class="form-group">
                         <label for="password">
                         </label><input type="password" name="password" id="password" class="form-control input-lg"
-                                       placeholder="Password" required="required"/>
-                    </div>
-                    <div class="col-12">
-                        <input type="submit" class="btn btn-primary btn-block" value="Войти"/>
+                                       placeholder="Пароль" required="required"/>
                     </div>
                 </fieldset>
+                <p>
+                <div>
+                    <button type="submit" class="btn btn-primary">Войти</button>
+                </div>
+                <p>
+                <div class="text-center">
+                    <p>
+                        Не зарегистрированы? <a th:href="@{/registration}">Регистрация</a>
+                    </p>
+                </div>
+                <div class="text-center">
+                    <p>
+                        <a href="/">На главную</a>
+                    </p>
+                </div>
             </form>
         </div>
     </div>
