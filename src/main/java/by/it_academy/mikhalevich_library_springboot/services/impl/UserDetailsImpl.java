@@ -1,6 +1,6 @@
 package by.it_academy.mikhalevich_library_springboot.services.impl;
 
-import by.it_academy.mikhalevich_library_springboot.entities.User;
+import by.it_academy.mikhalevich_library_springboot.services.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserDetailsImpl implements UserDetails {
 
-    private final User user;
+    private final UserDto user;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
