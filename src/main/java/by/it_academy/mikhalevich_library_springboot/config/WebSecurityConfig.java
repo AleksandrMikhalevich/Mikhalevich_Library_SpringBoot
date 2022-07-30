@@ -27,8 +27,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf()
                 .disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/books", "/books/page/*", "/authors", "/authors/page/*",
+                .antMatchers("/login", "/", "/index", "/books", "/books/page/*", "/authors", "/authors/page/*",
                         "/genres", "/genres/page/*", "/img/logo.jpg").permitAll()
+                .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/books/new-book", "/books/new-book/**", "/books/edit-book",
                         "/books/edit-book/**", "/books/page/*/*", "/authors/new-author", "/authors/new-author/**",
                         "/authors/edit-author", "/authors/edit-author/**", "/authors/page/*/*", "/genres/new-genre",
@@ -38,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
+                .loginPage("/login")
                 .permitAll()
                 .defaultSuccessUrl("/", true)
                 .and()
