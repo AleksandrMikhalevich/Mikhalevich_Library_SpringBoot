@@ -65,7 +65,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorDto findAuthorById(int id) {
+    public AuthorDto findAuthorById(Integer id) {
         return authorRepository.findById(id).map(authorMapper::authorToAuthorDto).orElse(null);
     }
 
@@ -89,7 +89,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void updateAuthor(int id, Integer[] publishersIds, String surname, String firstName, String secondName, String country) {
+    public void updateAuthor(Integer id, Integer[] publishersIds, String surname, String firstName, String secondName, String country) {
         List<Integer> listOfPublisherIds = new ArrayList<>();
         Collections.addAll(listOfPublisherIds, publishersIds);
         Set<AuthorDto.PublisherDto> publisherDtoSet = publisherRepository.findAllById(listOfPublisherIds).stream()
@@ -108,7 +108,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteAuthorById(int id) {
+    public void deleteAuthorById(Integer id) {
         authorRepository.deleteById(id);
     }
 

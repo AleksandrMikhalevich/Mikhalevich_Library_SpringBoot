@@ -74,7 +74,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookDto findBookById(int id) {
+    public BookDto findBookById(Integer id) {
         return bookRepository.findById(id).map(bookMapper::bookToBookDto).orElse(null);
     }
 
@@ -112,7 +112,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     @Transactional
-    public void updateBook(int id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
+    public void updateBook(Integer id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
                            Date receiptDate, String yearOfPublishing) {
         List<Integer> listOfAuthorIds = new ArrayList<>();
         Collections.addAll(listOfAuthorIds, authorsIds);
@@ -144,7 +144,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteBookById(int id) {
+    public void deleteBookById(Integer id) {
         bookRepository.deleteById(id);
     }
 }

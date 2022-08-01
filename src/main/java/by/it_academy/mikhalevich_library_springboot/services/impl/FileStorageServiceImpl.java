@@ -2,11 +2,10 @@ package by.it_academy.mikhalevich_library_springboot.services.impl;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Book;
 import by.it_academy.mikhalevich_library_springboot.entities.DBFile;
-import by.it_academy.mikhalevich_library_springboot.exceptions.FileStorageException;
 import by.it_academy.mikhalevich_library_springboot.exceptions.AppFileNotFoundException;
+import by.it_academy.mikhalevich_library_springboot.exceptions.FileStorageException;
 import by.it_academy.mikhalevich_library_springboot.repositories.BookRepository;
 import by.it_academy.mikhalevich_library_springboot.repositories.FileRepository;
-import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
 import by.it_academy.mikhalevich_library_springboot.services.dto.DBFileDto;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.FileStorageService;
 import by.it_academy.mikhalevich_library_springboot.services.mappers.DBFileMapper;
@@ -33,7 +32,7 @@ public class FileStorageServiceImpl implements FileStorageService {
 
     @Override
     @Transactional
-    public DBFileDto storeFile(int bookId, MultipartFile file) {
+    public DBFileDto storeFile(Integer bookId, MultipartFile file) {
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         try {
             if (fileName.contains("..")) {
@@ -58,7 +57,7 @@ public class FileStorageServiceImpl implements FileStorageService {
     }
 
     @Override
-    public DBFileDto findFileById(int id) {
+    public DBFileDto findFileById(Integer id) {
         return fileRepository.findById(id).map(fileMapper::DBFileToDBFileDto)
                 .orElseThrow(() -> new AppFileNotFoundException("Файл c " + id + "не найден"));
     }

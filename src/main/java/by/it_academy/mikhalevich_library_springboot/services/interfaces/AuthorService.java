@@ -14,13 +14,13 @@ public interface AuthorService {
 
     Page<AuthorDto> findAllAuthorsPaginatedSortedFiltered(AuthorFilter authorFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    AuthorDto findAuthorById(int id);
+    AuthorDto findAuthorById(Integer id);
 
     void addAuthor(Integer[] publishersIds, String surname, String firstName, String secondName, String country);
 
-    void updateAuthor(int id, Integer[] publishersIds, String surname, String firstName, String secondName, String country);
+    void updateAuthor(Integer id, Integer[] publishersIds, String surname, String firstName, String secondName, String country);
 
-    void deleteAuthorById(int id);
+    void deleteAuthorById(Integer id);
 
     List<AuthorDto> chooseAuthors(Integer[] authorsIds);
 

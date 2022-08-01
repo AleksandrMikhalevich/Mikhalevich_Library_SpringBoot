@@ -63,7 +63,7 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
-    public PublisherDto findPublisherById(int id) {
+    public PublisherDto findPublisherById(Integer id) {
         return publisherRepository.findById(id).map(publisherMapper::publisherToPublisherDto).orElse(null);
     }
 
@@ -79,7 +79,7 @@ public class PublisherServiceImpl implements PublisherService {
 
     @Override
     @Transactional
-    public void deletePublisherById(int id) {
+    public void deletePublisherById(Integer id) {
         Publisher publisher = publisherRepository.findById(id).orElse(null);
         assert publisher != null;
         for (Author author : publisher.getAuthors()) {

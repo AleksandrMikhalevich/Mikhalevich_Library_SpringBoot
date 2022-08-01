@@ -14,13 +14,13 @@ public interface PublisherService {
 
     Page<PublisherDto> findAllPublishersPaginatedSortedFiltered(PublisherFilter publisherFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    PublisherDto findPublisherById(int id);
+    PublisherDto findPublisherById(Integer id);
 
     void addPublisher(PublisherDto publisherDto);
 
     void updatePublisher(PublisherDto publisherDto);
 
-    void deletePublisherById(int id);
+    void deletePublisherById(Integer id);
 
     List<PublisherDto> choosePublishers(Integer[] publishersIds);
 }

@@ -14,13 +14,13 @@ public interface GenreService {
 
     Page<GenreDto> findAllGenresPaginatedSortedFiltered(GenreFilter genreFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    GenreDto findGenreById(int id);
+    GenreDto findGenreById(Integer id);
 
     void addGenre(GenreDto genreDto);
 
     void updateGenre(GenreDto genreDto);
 
-    void deleteGenreById(int id);
+    void deleteGenreById(Integer id);
 
     List<GenreDto> chooseGenres(Integer[] genresIds);
 }

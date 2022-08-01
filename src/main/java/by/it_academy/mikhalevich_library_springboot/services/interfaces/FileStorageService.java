@@ -1,6 +1,5 @@
 package by.it_academy.mikhalevich_library_springboot.services.interfaces;
 
-import by.it_academy.mikhalevich_library_springboot.entities.DBFile;
 import by.it_academy.mikhalevich_library_springboot.services.dto.DBFileDto;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FileStorageService {
 
-    DBFileDto storeFile(int bookId, MultipartFile file);
+    DBFileDto storeFile(Integer bookId, MultipartFile file);
 
-    DBFileDto findFileById(int id);
+    DBFileDto findFileById(Integer id);
 }

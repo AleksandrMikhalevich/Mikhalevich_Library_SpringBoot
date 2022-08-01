@@ -52,7 +52,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public GenreDto findGenreById(int id) {
+    public GenreDto findGenreById(Integer id) {
         return genreRepository.findById(id).map(genreMapper::genreToGenreDto).orElse(null);
     }
 
@@ -67,7 +67,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void deleteGenreById(int id) {
+    public void deleteGenreById(Integer id) {
         genreRepository.deleteById(id);
     }
 

@@ -14,14 +14,14 @@ public interface BookService {
 
     Page<BookDto> findAllBooksPaginatedSortedFiltered(BookFilter bookFilter, int pageNumber, int pageSize, String sortField, String sortDirection);
 
-    BookDto findBookById(int id);
+    BookDto findBookById(Integer id);
 
     void addBook(Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
                  Date receiptDate, String yearOfPublishing);
 
-    void updateBook(int id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
+    void updateBook(Integer id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId, String title, String language, String summary,
                     Date receiptDate, String yearOfPublishing);
 
-    void deleteBookById(int id);
+    void deleteBookById(Integer id);
 
 }
