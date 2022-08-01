@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Профиль</li>
+        </ol>
+    </nav>
+</div>
+<div class="w-90 p-3" th:if="${#authorization.expression('isAuthenticated()')}">
+    <form th:action="@{/user-account/delete-user/{id}(id=${user.id})}" th:method="post">
+        <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                data-bs-target="#deleteUserModal"
+                th:attr="data-bs-target='#deleteUserModal' + ${user.id}">
+            Удалить
+        </button>
+        <div class="modal modal-delete" th:id="deleteUserModal + ${user.id}" tabindex="-1"
+             aria-labelledby="deleteBookLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteUserLabel">Подтверждение удаления
+                            пользователя</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Закрыть"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Вы действительно хотите удалить свой аккаунт?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Отмена
+                        </button>
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="container">
+    <div class="row justify-content-center" style="margin-top:20px">
+        <div class="col-md-4 mb-3">
+            <form class="form-signin" th:action="@{/user-account/update-user/{id}(id=${user.id})}" th:method="post"
+                  th:object="${user}">
+                <fieldset>
+                    <legend>Редактирование профиля пользователя <span th:text="${user.login}"></span></legend>
+                    <div class="form-group">
+                        <label for="login">
+                        </label><input type="text" name="username" id="login" th:field="*{login}"
+                                       class="form-control input-lg"
+                                       placeholder="Логин" disabled="disabled"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">
+                        </label><input type="email" name="email" id="email" th:field="*{email}"
+                                       class="form-control input-lg"
+                                       placeholder="Электронная почта" required="required"/>
+                        <span class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">
+                        </label><input type="password" name="password" id="password" th:field="*{password}"
+                                       class="form-control input-lg"
+                                       placeholder="Новый пароль" required="required"/>
+                        <span class="text-danger" th:if="${#fields.hasErrors('password')}"
+                              th:errors="*{password}"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">
+                        </label><input type="password" name="passwordConfirm" id="confirmPassword"
+                                       th:field="*{passwordConfirm}" class="form-control input-lg"
+                                       placeholder="Повторите новый пароль" required="required"/>
+                        <span class="text-danger" th:text="${passwordError}"></span>
+                    </div>
+                    <input type="hidden" name="login" th:field="*{login}">
+                </fieldset>
+                <p>
+                <div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+            <p>
+            <div style="text-align: center;">
+                <form th:action="@{/index}">
+                    <button type="submit" class="btn btn-secondary">Назад</button>
+                </form>
+            </div>
+            <p>
+        </div>
+    </div>
+</div>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>

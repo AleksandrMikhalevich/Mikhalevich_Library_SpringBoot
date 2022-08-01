@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Пользователи</title>
+</head>
+<body class="d-flex flex-column min-vh-100">
+<div th:insert="~{header :: header}"></div>
+<div class="w-90 p-3">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/" class="link-info">Главная</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Пользователи</li>
+        </ol>
+    </nav>
+</div>
+<div class="w-90 p-3">
+    <button class="btn btn-info" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFilters"
+            aria-expanded="false" aria-controls="collapseFilters">
+        Найти пользователя
+    </button>
+</div>
+<div class="collapsing" id="collapseFilters">
+    <div class="card card-body">
+        <form class="row g-3" th:action="@{'/users/page/' + ${currentPage}}">
+            <div class="col-md-4 mb-3">
+                <label for="loginFilterInput" class="form-label">По логину:</label>
+                <input type="text" id="loginFilterInput" name="loginFilter" class="form-control"
+                       th:placeholder="${loginFilter}">
+            </div>
+            <div class="col-md-4 mb-3">
+                <label for="emailFilterInput" class="form-label">По электронной почте:</label>
+                <input type="text" id="emailFilterInput" name="emailFilter" class="form-control"
+                       th:placeholder="${emailFilter}">
+            </div>
+            <div class="col-12">
+                <input type="hidden" name="pageSize" th:value="${pageSize}">
+                <input type="hidden" name="sortField" th:value="${sortField}">
+                <input type="hidden" name="sortDir" th:value="${sortDir}">
+                <button type="submit" class="btn btn-success">Сохранить</button>
+            </div>
+        </form>
+        <p>
+        <form th:action="@{/users}">
+            <div class="col-12">
+                <button type="submit" class="btn btn-secondary">Сбросить</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="w-90 p-3" style="text-align: center;">
+    <h2>Пользователи</h2>
+    <span class="text-danger" th:text="${accountError}"></span>
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th scope="col" class="align-middle">
+                <th:block
+                        th:if="${loginFilter != null} or ${emailFilter != null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                         + '&pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                </th:block>
+                <th:block
+                        th:if="${loginFilter == null} or ${emailFilter == null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                </th:block>
+            </th>
+            <th scope="col" class="align-middle">
+                <th:block
+                        th:if="${loginFilter != null} or ${emailFilter != null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                         + '&pageSize=' + ${pageSize} + '&sortField=login&sortDir=' + ${reverseSortDir}}">Логин</a>
+                </th:block>
+                <th:block
+                        th:if="${loginFilter == null} or ${emailFilter == null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=login&sortDir=' + ${reverseSortDir}}">Логин</a>
+                </th:block>
+            </th>
+            <th scope="col" class="align-middle">
+                <th:block
+                        th:if="${loginFilter != null} or ${emailFilter != null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                         + '&pageSize=' + ${pageSize} + '&sortField=email&sortDir=' + ${reverseSortDir}}">Электронная почта</a>
+                </th:block>
+                <th:block
+                        th:if="${loginFilter == null} or ${emailFilter == null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=email&sortDir=' + ${reverseSortDir}}">Электронная почта</a>
+                </th:block>
+            </th>
+            <th scope="col" class="align-middle">
+                <th:block
+                        th:if="${loginFilter != null} or ${emailFilter != null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                         + '&pageSize=' + ${pageSize} + '&sortField=roles.name&sortDir=' + ${reverseSortDir}}">Роль</a>
+                </th:block>
+                <th:block
+                        th:if="${loginFilter == null} or ${emailFilter == null}">
+                    <a th:href="@{'/users/page/' + ${currentPage} + '?pageSize=' + ${pageSize} + '&sortField=roles.name&sortDir=' + ${reverseSortDir}}">Роль</a>
+                </th:block>
+            </th>
+            <th scope="col" class="align-middle">Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}"></td>
+            <td th:text="${user.login}"></td>
+            <td th:text="${user.email}"></td>
+            <td>
+                <th:block th:each="role : ${user.roles}">
+                    <div th:text="${role.name}">
+                    </div>
+                </th:block>
+            </td>
+            <td>
+                <form th:method="post"
+                      th:action="@{/users/page/{id}/{page}/{pageSize}/{sortField}/{sortDir}(id=${user.id}, page=${currentPage}, pageSize=${pageSize}, sortField=${sortField},sortDir=${sortDir})}">
+                    <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal"
+                            data-bs-target="#deleteUserModal"
+                            th:attr="data-bs-target='#deleteUserModal' + ${user.id}">
+                        Удалить
+                    </button>
+                    <div class="modal modal-delete" th:id="deleteUserModal + ${user.id}" tabindex="-1"
+                         aria-labelledby="deleteBookLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteUserLabel">Подтверждение удаления
+                                        пользователя</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Закрыть"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Вы действительно хотите удалить выбранного пользователя?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                                        Отмена
+                                    </button>
+                                    <button type="submit" class="btn btn-danger">Удалить</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<nav aria-label="paginationUsers">
+    <div style="text-align: center;">
+        <th:block th:if="${loginFilter != null} or ${emailFilter != null}">
+            <form th:action="@{'/users/page/' + ${currentPage} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                         + '&pageSize=' + ${pageSize} + '&sortField=' + ${sortField} +'&sortDir=' + ${sortDir}}">
+                <div th:if="${pageSize == 5}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option selected value="5">5 пользователей</option>
+                            <option value="10">10 пользователей</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <input type="hidden" name="loginFilter" th:value="${loginFilter}">
+                        <input type="hidden" name="emailFilter" th:value="${emailFilter}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+                <div th:if="${pageSize == 10}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option value="5">5 пользователей</option>
+                            <option selected value="10">10 пользователей</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <input type="hidden" name="loginFilter" th:value="${loginFilter}">
+                        <input type="hidden" name="emailFilter" th:value="${emailFilter}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+            </form>
+        </th:block>
+        <th:block th:if="${loginFilter == null} or ${emailFilter == null}">
+            <form th:action="@{'/users/page/'+ ${currentPage} +'?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                <div th:if="${pageSize == 5}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option selected value="5">5 пользователей</option>
+                            <option value="10">10 пользователей</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+                <div th:if="${pageSize == 10}">
+                    <label>Отображение по:
+                        <select class="form-select" aria-label="Default select example" size="1" name="pageSize"
+                                th:value="${pageSize}">
+                            <option value="5">5 пользователей</option>
+                            <option selected value="10">10 пользователей</option>
+                        </select>
+                        <input type="hidden" name="sortField" th:value="${sortField}">
+                        <input type="hidden" name="sortDir" th:value="${sortDir}">
+                        <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+                    </label>
+                </div>
+            </form>
+        </th:block>
+    </div>
+    <p>
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <th:block th:if="${loginFilter != null} or ${emailFilter != null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/users/page/'+ ${1} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                    + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
+            </th:block>
+            <th:block th:if="${loginFilter == null} or ${emailFilter == null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/users/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
+            </th:block>
+        </li>
+        <li class="page-item">
+            <th:block th:if="${loginFilter != null} or ${emailFilter != null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/users/page/'+ ${currentPage - 1} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                   + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
+            </th:block>
+            <th:block th:if="${loginFilter == null} or ${emailFilter == null}">
+                <a class="page-link" th:if="${currentPage > 1}"
+                   th:href="@{'/users/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
+            </th:block>
+        </li>
+        <li class="d-flex flex-row page-item active" aria-current="page">
+            <th:block th:if="${loginFilter != null} or ${emailFilter != null}">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a class="page-link" th:if="${i != currentPage}"
+           th:href="@{'/users/page/' + ${i} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+            + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+        </a>
+        <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+        </span>
+            </th:block>
+            <th:block th:if="${loginFilter == null} or ${emailFilter == null}">
+                <span th:each="i: ${#numbers.sequence(1, totalPages)}">
+        <a class="page-link" th:if="${i != currentPage}"
+           th:href="@{'/users/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+        </a>
+        <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
+        </span>
+            </th:block>
+        </li>
+        <li class="page-item">
+            <th:block th:if="${loginFilter != null} or ${emailFilter != null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/users/page/' + ${currentPage + 1} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                    + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
+            </th:block>
+            <th:block th:if="${loginFilter == null} or ${emailFilter == null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/users/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
+            </th:block>
+        </li>
+        <li class="page-item">
+            <th:block th:if="${loginFilter != null} or ${emailFilter != null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/users/page/' + ${totalPages} + '?loginFilter=' + ${loginFilter} + '&emailFilter=' + ${emailFilter}
+                    + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
+            </th:block>
+            <th:block th:if="${loginFilter == null} or ${emailFilter == null}">
+                <a class="page-link" th:if="${currentPage < totalPages}"
+                   th:href="@{'/users/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+                </a>
+                <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
+            </th:block>
+        </li>
+    </ul>
+    <div style="text-align: center;">
+        Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+    </div>
+</nav>
+<div class="wrapper flex-grow-1">
+</div>
+<p>
+<div th:insert="~{footer :: footer}"></div>
+</body>
+</html>
