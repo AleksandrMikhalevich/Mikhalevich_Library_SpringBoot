@@ -1,9 +1,6 @@
 package by.it_academy.mikhalevich_library_springboot.controller;
 
-import by.it_academy.mikhalevich_library_springboot.filters.AuthorFilter;
-import by.it_academy.mikhalevich_library_springboot.filters.BookFilter;
-import by.it_academy.mikhalevich_library_springboot.filters.GenreFilter;
-import by.it_academy.mikhalevich_library_springboot.filters.PublisherFilter;
+import by.it_academy.mikhalevich_library_springboot.filters.*;
 import by.it_academy.mikhalevich_library_springboot.services.dto.*;
 import by.it_academy.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.AuthorService;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.sql.Date;
 import java.util.List;
 
@@ -44,25 +42,83 @@ public class AppController {
         return "index";
     }
 
+    @GetMapping("/users")
+    public String showUsersFirstPage(Model model, SessionStatus sessionStatus) {
+        sessionStatus.setComplete();
+        showAllUsers(DEFAULT_PAGE_NUMBER_1, DEFAULT_PAGE_SIZE_5, DEFAULT_SORT_FIELD_ID, DEFAULT_SORT_DIR_ASC, null,
+                null, model);
+        return "users";
+    }
+
+    @GetMapping("/users/page/{pageNumber}")
+    public String showUsers(@PathVariable("pageNumber") int pageNumber, int pageSize, String sortField, String sortDir,
+                            String loginFilter, String emailFilter, Model model) {
+        showAllUsers(pageNumber, pageSize, sortField, sortDir, loginFilter, emailFilter, model);
+        return "users";
+    }
+
     @GetMapping("/registration")
-    public String registerUser(@ModelAttribute("user") UserDto userDto) {
+    public String newUser(@ModelAttribute("user") UserDto userDto) {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult, Model model) {
+    public String addUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        if (!user.getPassword().equals(user.getPasswordConfirm())){
+        if (!userDto.getPassword().equals(userDto.getPasswordConfirm())){
             model.addAttribute("passwordError", "Пароли не совпадают");
             return "registration";
         }
-        if (!userDetailsService.saveUser(user)){
+        if (!userDetailsService.saveUser(userDto)){
             model.addAttribute("loginError", "Пользователь с таким именем уже существует");
             return "registration";
         }
         return "redirect:/";
+    }
+
+    @PostMapping("/users/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
+    public String deleteUser(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
+                             @PathVariable int pageSize, @PathVariable("sortField") String sortField,
+                             @PathVariable("sortDir") String sortDir, Principal principal, Model model) {
+        UserDto user = userDetailsService.findUserById(id);
+        if(principal.getName().equals(user.getLogin())){
+            model.addAttribute("accountError", "Удалить свой аккаунт вы можете через страницу профиля");
+        } else {
+            userDetailsService.deleteUserById(id);
+        }
+        model.addAttribute(CURRENT_PAGE, pageNumber);
+        model.addAttribute(PAGE_SIZE, pageSize);
+        model.addAttribute(SORT_FIELD, sortField);
+        model.addAttribute(SORT_DIR, sortDir);
+        return showUsers(pageNumber, pageSize, sortField, sortDir, null, null, model);
+    }
+
+    @GetMapping("/user-account/{login}")
+    public String editUser(@PathVariable("login") String login, Model model) {
+        UserDto user = userDetailsService.findUserByLogin(login);
+        model.addAttribute("user", user);
+        return "user-account";
+    }
+
+    @PostMapping("/user-account/update-user/{id}")
+    public String updateUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "user-account";
+        }
+        if (!user.getPassword().equals(user.getPasswordConfirm())){
+            model.addAttribute("passwordError", "Пароли не совпадают");
+            return "user-account";
+        }
+        userDetailsService.updateUser(user);
+        return "redirect:/";
+    }
+
+    @PostMapping("/user-account/delete-user/{id}")
+    public String deleteAccount(@PathVariable("id") Integer id) {
+        userDetailsService.deleteUserById(id);
+        return "redirect:/logout";
     }
 
     @GetMapping("/books")
@@ -102,7 +158,6 @@ public class AppController {
         model.addAttribute(BOOKS, books);
         return "books";
     }
-
 
     @GetMapping("/books/new-book")
     public String newBook() {
@@ -168,7 +223,7 @@ public class AppController {
     }
 
     @GetMapping("/books/new-book/choose-publisher/confirm")
-    public String confirmPublisherForNewBook(Model model, int publisherId) {
+    public String confirmPublisherForNewBook(Model model, Integer publisherId) {
         PublisherDto publisherDto = publisherService.findPublisherById(publisherId);
         model.addAttribute(BOOK_PUBLISHER, publisherDto);
         return "add-book";
@@ -182,7 +237,7 @@ public class AppController {
     }
 
     @PostMapping("/books/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String deleteBook(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String deleteBook(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                              @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                              @PathVariable("sortDir") String sortDir, Model model, SessionStatus sessionStatus) {
         bookService.deleteBookById(id);
@@ -196,7 +251,7 @@ public class AppController {
     }
 
     @GetMapping("/books/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String editBook(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String editBook(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                            @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                            @PathVariable("sortDir") String sortDir, Model model) {
         BookDto bookDto = bookService.findBookById(id);
@@ -268,14 +323,14 @@ public class AppController {
     }
 
     @GetMapping("/books/edit-book/choose-publisher/confirm")
-    public String confirmPublisherForEditBook(Model model, int publisherId) {
+    public String confirmPublisherForEditBook(Model model, Integer publisherId) {
         PublisherDto publisherDto = publisherService.findPublisherById(publisherId);
         model.addAttribute(BOOK_PUBLISHER, publisherDto);
         return "update-book";
     }
 
     @PostMapping("/books/update-book/{id}")
-    public String updateBook(@PathVariable("id") int id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId,
+    public String updateBook(@PathVariable("id") Integer id, Integer[] authorsIds, Integer[] genresIds, Integer publisherId,
                              String title, String language, String summary, Date receiptDate, String yearOfPublishing,
                              int pageNumber, int pageSize, String sortField, String sortDir, Model model, SessionStatus sessionStatus) {
         bookService.updateBook(id, authorsIds, genresIds, publisherId, title, language, summary, receiptDate, yearOfPublishing);
@@ -335,7 +390,7 @@ public class AppController {
     }
 
     @GetMapping("/authors/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String editAuthor(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String editAuthor(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                              @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                              @PathVariable("sortDir") String sortDir, Model model) {
         AuthorDto authorDto = authorService.findAuthorById(id);
@@ -370,7 +425,7 @@ public class AppController {
     }
 
     @PostMapping("/authors/update-author/{id}")
-    public String updateAuthor(@PathVariable("id") int id, Integer[] publishersIds, String surname, String firstName,
+    public String updateAuthor(@PathVariable("id") Integer id, Integer[] publishersIds, String surname, String firstName,
                                String secondName, String country, int pageNumber, int pageSize, String sortField,
                                String sortDir, Model model) {
         authorService.updateAuthor(id, publishersIds, surname, firstName, secondName, country);
@@ -379,7 +434,7 @@ public class AppController {
     }
 
     @PostMapping("/authors/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String deleteAuthor(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String deleteAuthor(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                                @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                                @PathVariable("sortDir") String sortDir, Model model) {
         authorService.deleteAuthorById(id);
@@ -420,7 +475,7 @@ public class AppController {
     }
 
     @PostMapping("/genres/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String deleteGenre(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String deleteGenre(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                               @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                               @PathVariable("sortDir") String sortDir, Model model) {
         genreService.deleteGenreById(id);
@@ -432,7 +487,7 @@ public class AppController {
     }
 
     @GetMapping("/genres/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String editGenre(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String editGenre(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                             @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                             @PathVariable("sortDir") String sortDir, Model model) {
         GenreDto genreDto = genreService.findGenreById(id);
@@ -485,7 +540,7 @@ public class AppController {
     }
 
     @PostMapping("/publishers/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String deletePublisher(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String deletePublisher(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                                   @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                                   @PathVariable("sortDir") String sortDir, Model model) {
         publisherService.deletePublisherById(id);
@@ -498,7 +553,7 @@ public class AppController {
     }
 
     @GetMapping("/publishers/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
-    public String editPublisher(@PathVariable("id") int id, @PathVariable("pageNumber") int pageNumber,
+    public String editPublisher(@PathVariable("id") Integer id, @PathVariable("pageNumber") int pageNumber,
                                 @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                                 @PathVariable("sortDir") String sortDir, Model model) {
         PublisherDto publisherDto = publisherService.findPublisherById(id);
@@ -519,6 +574,22 @@ public class AppController {
         publisherService.updatePublisher(publisherDto);
         return showPublishers(pageNumber, pageSize, sortField, sortDir, nameFilter, countryFilter, cityFilter, streetFilter,
                 houseFilter, zipcodeFilter, model);
+    }
+
+    private void showAllUsers(int pageNumber, int pageSize, String sortField, String sortDir, String loginFilter,
+                               String emailFilter, Model model) {
+        UserFilter userFilter = UserFilter.builder()
+                .loginFilter(loginFilter)
+                .emailFilter(emailFilter)
+                .build();
+        Page<UserDto> page = userDetailsService.findAllUsersPaginatedSortedFiltered(userFilter, pageNumber, pageSize, sortField, sortDir);
+        int totalPages = page.getTotalPages();
+        long totalItems = page.getTotalElements();
+        List<UserDto> users = page.getContent();
+        doPaginationSortingFiltration(pageNumber, pageSize, sortField, sortDir, model, totalPages, totalItems);
+        model.addAttribute("loginFilter", loginFilter);
+        model.addAttribute("emailFilter", emailFilter);
+        model.addAttribute("users", users);
     }
 
     private void doBookFilters(String titleFilter, String languageFilter, String summaryFilter, String authorFilter,
