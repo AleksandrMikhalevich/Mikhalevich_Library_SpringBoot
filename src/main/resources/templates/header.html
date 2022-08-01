@@ -40,6 +40,9 @@
                 <li class="nav-item" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
                     <a class="nav-link" href="/publishers">Издательства</a>
                 </li>
+                <li class="nav-item" th:if="${#authorization.expression('hasAuthority(''ADMIN'')')}">
+                    <a class="nav-link" href="/users">Пользователи</a>
+                </li>
             </ul>
             <div class=" w-90 p-3 d-flex flex-row align-items-center">
                 <th:block th:if="${#authorization.expression('isAnonymous()')}">
@@ -56,6 +59,7 @@
                 <div class="w-90 p-3 d-flex flex-row align-items-center" th:if="${#authorization.expression('isAuthenticated()')}">
                     <div class="p-2">Вы вошли: <span sec:authentication="name"></span></div>
                     <div class="p-2">Роль: <span sec:authentication="principal.authorities"></span></div>
+                    <div class="p-2"><a class="nav-link text-info" th:href="@{/user-account/{login}(login=${#authentication.principal.getUsername})}">Профиль |</a></div>
                     <div class="p-2"><a class="nav-link text-info" th:href="@{/logout}">Выход  |</a></div>
                     <div class="p-2" id="current_date_time_block2">
                         <script type="text/javascript">
