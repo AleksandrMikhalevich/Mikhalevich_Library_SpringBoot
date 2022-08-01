@@ -30,12 +30,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login", "/", "/index", "/books", "/books/page/*", "/authors", "/authors/page/*",
                         "/genres", "/genres/page/*", "/img/logo.jpg").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/books/new-book", "/books/new-book/**", "/books/edit-book",
+                .antMatchers("/users", "/users/page/*","/books/new-book", "/books/new-book/**", "/books/edit-book",
                         "/books/edit-book/**", "/books/page/*/*", "/authors/new-author", "/authors/new-author/**",
                         "/authors/edit-author", "/authors/edit-author/**", "/authors/page/*/*", "/genres/new-genre",
                         "/genres/edit-genre", "/genres/page/*/*", "/publishers", "/publishers/page/*/*", "/publishers/**",
                         "/uploadFile").hasAuthority("ADMIN")
-                .antMatchers("/downloadFile", "/downloadFile/**").hasAnyAuthority("ADMIN", "USER")
+                .antMatchers("/downloadFile", "/downloadFile/**", "/user-account",
+                        "/user-account/**").hasAnyAuthority("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
