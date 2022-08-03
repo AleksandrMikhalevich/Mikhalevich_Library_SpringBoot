@@ -58,4 +58,8 @@ public class Constants {
     public static final String DEFAULT_SORT_FIELD_ID = "id";
     public static final String DEFAULT_SORT_DIR_ASC = "asc";
     public static final String SORT_DIR_DESC = "desc";
+    public static final String PASSWORD_ERROR = "passwordError";
+    public static final String LOGIN_ERROR = "loginError";
+    public static final String REGISTRATION_MESSAGE = "registrationMessage";
+    public static final String ACCOUNT_ERROR = "accountError";
 }

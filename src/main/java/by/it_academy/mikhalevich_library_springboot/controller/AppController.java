@@ -3,10 +3,7 @@ package by.it_academy.mikhalevich_library_springboot.controller;
 import by.it_academy.mikhalevich_library_springboot.filters.*;
 import by.it_academy.mikhalevich_library_springboot.services.dto.*;
 import by.it_academy.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
-import by.it_academy.mikhalevich_library_springboot.services.interfaces.AuthorService;
-import by.it_academy.mikhalevich_library_springboot.services.interfaces.BookService;
-import by.it_academy.mikhalevich_library_springboot.services.interfaces.GenreService;
-import by.it_academy.mikhalevich_library_springboot.services.interfaces.PublisherService;
+import by.it_academy.mikhalevich_library_springboot.services.interfaces.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -36,6 +33,7 @@ public class AppController {
     private final GenreService genreService;
     private final PublisherService publisherService;
     private final UserDetailsServiceImpl userDetailsService;
+    private final EmailService emailService;
 
     @GetMapping(value = {"/", "/index"})
     public String showMain() {
@@ -68,14 +66,16 @@ public class AppController {
             return "registration";
         }
         if (!userDto.getPassword().equals(userDto.getPasswordConfirm())){
-            model.addAttribute("passwordError", "Пароли не совпадают");
+            model.addAttribute(PASSWORD_ERROR, "Пароли не совпадают");
             return "registration";
         }
         if (!userDetailsService.saveUser(userDto)){
-            model.addAttribute("loginError", "Пользователь с таким именем уже существует");
+            model.addAttribute(LOGIN_ERROR, "Пользователь с таким именем уже существует");
             return "registration";
         }
-        return "redirect:/";
+        String message = emailService.sendRegistrationMail(userDto.getEmail(), userDto.getLogin(), userDto.getPassword());
+        model.addAttribute(REGISTRATION_MESSAGE, message);
+        return "index";
     }
 
     @PostMapping("/users/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
@@ -84,7 +84,7 @@ public class AppController {
                              @PathVariable("sortDir") String sortDir, Principal principal, Model model) {
         UserDto user = userDetailsService.findUserById(id);
         if(principal.getName().equals(user.getLogin())){
-            model.addAttribute("accountError", "Удалить свой аккаунт вы можете через страницу профиля");
+            model.addAttribute(ACCOUNT_ERROR, "Удалить свой аккаунт вы можете через страницу профиля");
         } else {
             userDetailsService.deleteUserById(id);
         }
@@ -108,7 +108,7 @@ public class AppController {
             return "user-account";
         }
         if (!user.getPassword().equals(user.getPasswordConfirm())){
-            model.addAttribute("passwordError", "Пароли не совпадают");
+            model.addAttribute(PASSWORD_ERROR, "Пароли не совпадают");
             return "user-account";
         }
         userDetailsService.updateUser(user);
