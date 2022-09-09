@@ -39,6 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/user-account/**").hasAnyAuthority("ADMIN", "USER")
                 .anyRequest().authenticated()
                 .and()
+                .exceptionHandling().accessDeniedPage("/access-denied")
+                .and()
                 .formLogin()
                 .loginPage("/login")
                 .permitAll()
