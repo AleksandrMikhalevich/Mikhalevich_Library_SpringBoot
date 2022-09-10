@@ -55,7 +55,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
     public void updateUser(UserDto userDto) {
-        System.out.println(userDto);
         User user = userMapper.userDtoToUser(userDto);
         user.setRoles(Collections.singleton(new Role(1, "USER")));
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
