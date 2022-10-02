@@ -44,7 +44,7 @@
                     <a class="nav-link" href="/users">Пользователи</a>
                 </li>
             </ul>
-            <div class=" w-90 p-3 d-flex flex-row align-items-center">
+            <div class="w-90 p-3 d-flex flex-row align-items-center">
                 <th:block th:if="${#authorization.expression('isAnonymous()')}">
                     <a class="nav-link text-info" th:href="@{/login}">Вход / Регистрация  |</a>
                     <div class="p-2" id="current_date_time_block">
