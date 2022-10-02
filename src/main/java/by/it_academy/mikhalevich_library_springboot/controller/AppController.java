@@ -56,24 +56,24 @@ public class AppController {
     }
 
     @GetMapping("/registration")
-    public String newUser(@ModelAttribute("user") UserDto userDto) {
+    public String newUser(@ModelAttribute("user") UserDto user) {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String addUser(@ModelAttribute("user") @Valid UserDto userDto, BindingResult bindingResult, Model model) {
+    public String addUser(@ModelAttribute("user") @Valid UserDto user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        if (!userDto.getPassword().equals(userDto.getPasswordConfirm())){
+        if (!user.getPassword().equals(user.getPasswordConfirm())){
             model.addAttribute(PASSWORD_ERROR, "Пароли не совпадают");
             return "registration";
         }
-        if (!userDetailsService.saveUser(userDto)){
+        if (!userDetailsService.saveUser(user)){
             model.addAttribute(LOGIN_ERROR, "Пользователь с таким именем уже существует");
             return "registration";
         }
-        String message = emailService.sendRegistrationMail(userDto.getEmail(), userDto.getLogin(), userDto.getPassword());
+        String message = emailService.sendRegistrationMail(user.getEmail(), user.getLogin(), user.getPassword());
         model.addAttribute(REGISTRATION_MESSAGE, message);
         return "index";
     }
@@ -112,7 +112,9 @@ public class AppController {
             return "user-account";
         }
         userDetailsService.updateUser(user);
-        return "redirect:/";
+        String message = emailService.sendUpdateMail(user.getEmail(), user.getLogin(), user.getPassword());
+        model.addAttribute(UPDATE_ACCOUNT_MESSAGE, message);
+        return "index";
     }
 
     @PostMapping("/user-account/delete-user/{id}")

@@ -37,4 +37,21 @@ public class EmailServiceImpl implements EmailService {
             return "Ошибка отправки письма!";
         }
     }
+
+    @Override
+    public String sendUpdateMail(String email, String login, String password) {
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setFrom(sender);
+            mailMessage.setTo(email);
+            mailMessage.setText("Добрый день! Вы успешно обновили профиль в интернет-библиотеке Bookаньеры." + "\n"
+                    + "Ваш логин для входа: " + login + "\n" + "Ваш новый пароль: " + password);
+            mailMessage.setSubject("Регистрация на Bookаньерах");
+            javaMailSender.send(mailMessage);
+            return "Письмо с обновленными данными профиля направлены на указанную вами электронную почту.";
+        }
+        catch (Exception e) {
+            return "Ошибка отправки письма!";
+        }
+    }
 }

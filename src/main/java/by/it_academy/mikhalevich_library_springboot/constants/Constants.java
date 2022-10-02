@@ -62,4 +62,5 @@ public class Constants {
     public static final String LOGIN_ERROR = "loginError";
     public static final String REGISTRATION_MESSAGE = "registrationMessage";
     public static final String ACCOUNT_ERROR = "accountError";
+    public static final String UPDATE_ACCOUNT_MESSAGE = "updateAccountMessage";
 }

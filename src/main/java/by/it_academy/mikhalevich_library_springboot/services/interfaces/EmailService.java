@@ -7,4 +7,6 @@ package by.it_academy.mikhalevich_library_springboot.services.interfaces;
 public interface EmailService {
 
     String sendRegistrationMail(String email, String login, String password);
+
+    String sendUpdateMail(String email, String login, String password);
 }
