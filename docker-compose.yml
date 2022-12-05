@@ -1,0 +1,16 @@
+version: '1.0'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: library-db
+      MYSQL_TCP_PORT: 3303
+    ports:
+      - "3303:3303"
+    expose:
+      - "3303"
+    volumes:
+      - mysql-db:/var/lib/mysql
+volumes:
+  mysql-db:
