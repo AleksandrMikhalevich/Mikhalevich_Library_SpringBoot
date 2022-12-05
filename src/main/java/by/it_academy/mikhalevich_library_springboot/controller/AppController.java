@@ -65,11 +65,11 @@ public class AppController {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        if (!user.getPassword().equals(user.getPasswordConfirm())){
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
             model.addAttribute(PASSWORD_ERROR, "Пароли не совпадают");
             return "registration";
         }
-        if (!userDetailsService.saveUser(user)){
+        if (!userDetailsService.saveUser(user)) {
             model.addAttribute(LOGIN_ERROR, "Пользователь с таким именем уже существует");
             return "registration";
         }
@@ -83,7 +83,7 @@ public class AppController {
                              @PathVariable int pageSize, @PathVariable("sortField") String sortField,
                              @PathVariable("sortDir") String sortDir, Principal principal, Model model) {
         UserDto user = userDetailsService.findUserById(id);
-        if(principal.getName().equals(user.getLogin())){
+        if (principal.getName().equals(user.getLogin())) {
             model.addAttribute(ACCOUNT_ERROR, "Удалить свой аккаунт вы можете через страницу профиля");
         } else {
             userDetailsService.deleteUserById(id);
@@ -107,7 +107,7 @@ public class AppController {
         if (bindingResult.hasErrors()) {
             return "user-account";
         }
-        if (!user.getPassword().equals(user.getPasswordConfirm())){
+        if (!user.getPassword().equals(user.getPasswordConfirm())) {
             model.addAttribute(PASSWORD_ERROR, "Пароли не совпадают");
             return "user-account";
         }
@@ -312,7 +312,7 @@ public class AppController {
     @GetMapping("/books/edit-book/choose-publisher")
     public String choosePublisherForEditBook(Model model) {
         return showPublishersForEditBook(DEFAULT_PAGE_NUMBER_1, DEFAULT_PAGE_SIZE_5, DEFAULT_SORT_FIELD_ID, DEFAULT_SORT_DIR_ASC,
-                null,null, null, null, null, null, model);
+                null, null, null, null, null, null, model);
     }
 
     @GetMapping("/books/edit-book/choose-publisher/page/{pageNumber}")
@@ -366,7 +366,7 @@ public class AppController {
     @GetMapping("/authors/new-author/choose-publishers")
     public String choosePublishersForNewAuthor(Model model) {
         return showPublishersForNewAuthor(DEFAULT_PAGE_NUMBER_1, DEFAULT_PAGE_SIZE_5, DEFAULT_SORT_FIELD_ID, DEFAULT_SORT_DIR_ASC,
-                null,null, null, null, null, null, model);
+                null, null, null, null, null, null, model);
     }
 
     @GetMapping("/authors/new-author/choose-publishers/page/{pageNumber}")
@@ -407,7 +407,7 @@ public class AppController {
     @GetMapping("/authors/edit-author/choose-publishers")
     public String choosePublishersForEditAuthor(Model model) {
         return showPublishersForEditAuthor(DEFAULT_PAGE_NUMBER_1, DEFAULT_PAGE_SIZE_5, DEFAULT_SORT_FIELD_ID, DEFAULT_SORT_DIR_ASC,
-                null,null, null, null, null, null, model);
+                null, null, null, null, null, null, model);
     }
 
     @GetMapping("/authors/edit-author/choose-publishers/page/{pageNumber}")
@@ -445,7 +445,7 @@ public class AppController {
         model.addAttribute(SORT_FIELD, sortField);
         model.addAttribute(SORT_DIR, sortDir);
         return showAuthors(pageNumber, pageSize, sortField, sortDir, null, null,
-                null, null, null, null,  model);
+                null, null, null, null, model);
     }
 
     @GetMapping("/genres")
@@ -471,7 +471,7 @@ public class AppController {
     @PostMapping("/genres/add-genre")
     public String addGenre(@ModelAttribute("genre") @Valid GenreDto genreDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors())
-           return "add-genre";
+            return "add-genre";
         genreService.addGenre(genreDto);
         return "redirect:/genres";
     }
@@ -515,7 +515,7 @@ public class AppController {
     public String showPublishersFirstPage(Model model, SessionStatus sessionStatus) {
         sessionStatus.setComplete();
         showAllPublishers(DEFAULT_PAGE_NUMBER_1, DEFAULT_PAGE_SIZE_5, DEFAULT_SORT_FIELD_ID, DEFAULT_SORT_DIR_ASC, null,
-                null,null, null, null, null, model);
+                null, null, null, null, null, model);
         return "publishers";
     }
 
@@ -551,7 +551,7 @@ public class AppController {
         model.addAttribute(SORT_FIELD, sortField);
         model.addAttribute(SORT_DIR, sortDir);
         return showPublishers(pageNumber, pageSize, sortField, sortDir, null, null, null,
-                null,null,null, model);
+                null, null, null, model);
     }
 
     @GetMapping("/publishers/page/{id}/{pageNumber}/{pageSize}/{sortField}/{sortDir}")
@@ -569,8 +569,8 @@ public class AppController {
 
     @PostMapping("/publishers/update-publisher/{id}")
     public String updatePublisher(@ModelAttribute("publisher") @Valid PublisherDto publisherDto, BindingResult bindingResult, String nameFilter,
-                              String countryFilter, String cityFilter, String streetFilter,String houseFilter, String zipcodeFilter,
-                              int pageNumber, int pageSize, String sortField, String sortDir, Model model) {
+                                  String countryFilter, String cityFilter, String streetFilter, String houseFilter, String zipcodeFilter,
+                                  int pageNumber, int pageSize, String sortField, String sortDir, Model model) {
         if (bindingResult.hasErrors())
             return "update-publisher";
         publisherService.updatePublisher(publisherDto);
@@ -579,7 +579,7 @@ public class AppController {
     }
 
     private void showAllUsers(int pageNumber, int pageSize, String sortField, String sortDir, String loginFilter,
-                               String emailFilter, Model model) {
+                              String emailFilter, Model model) {
         UserFilter userFilter = UserFilter.builder()
                 .loginFilter(loginFilter)
                 .emailFilter(emailFilter)
