@@ -3,12 +3,13 @@ package by.it_academy.mikhalevich_library_springboot.config;
 import by.it_academy.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * @author Alex Mikhalevich
@@ -17,20 +18,20 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
 
-    @Override
-    protected void configure(HttpSecurity httpSecurity) throws Exception {
-        httpSecurity
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http
                 .csrf()
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/login", "/", "/index", "/books", "/books/page/*", "/authors", "/authors/page/*",
                         "/genres", "/genres/page/*", "/img/logo.jpg").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/users", "/users/page/*","/books/new-book", "/books/new-book/**", "/books/edit-book",
+                .antMatchers("/users", "/users/page/*", "/books/new-book", "/books/new-book/**", "/books/edit-book",
                         "/books/edit-book/**", "/books/page/*/*", "/authors/new-author", "/authors/new-author/**",
                         "/authors/edit-author", "/authors/edit-author/**", "/authors/page/*/*", "/genres/new-genre",
                         "/genres/edit-genre", "/genres/page/*/*", "/publishers", "/publishers/page/*/*", "/publishers/**",
@@ -49,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .permitAll()
                 .logoutSuccessUrl("/");
+        return http.build();
     }
 
     @Autowired
