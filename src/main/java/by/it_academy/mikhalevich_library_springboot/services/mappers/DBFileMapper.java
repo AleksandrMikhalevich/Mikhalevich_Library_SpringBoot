@@ -2,7 +2,9 @@ package by.it_academy.mikhalevich_library_springboot.services.mappers;
 
 import by.it_academy.mikhalevich_library_springboot.entities.DBFile;
 import by.it_academy.mikhalevich_library_springboot.services.dto.DBFileDto;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.ReportingPolicy;
 
 /**
  * @author Alex Mikhalevich

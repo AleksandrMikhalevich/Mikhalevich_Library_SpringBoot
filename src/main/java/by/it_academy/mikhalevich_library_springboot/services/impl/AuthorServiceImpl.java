@@ -1,8 +1,8 @@
 package by.it_academy.mikhalevich_library_springboot.services.impl;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Author;
-import by.it_academy.mikhalevich_library_springboot.repositories.AuthorRepository;
 import by.it_academy.mikhalevich_library_springboot.filters.AuthorFilter;
+import by.it_academy.mikhalevich_library_springboot.repositories.AuthorRepository;
 import by.it_academy.mikhalevich_library_springboot.repositories.PublisherRepository;
 import by.it_academy.mikhalevich_library_springboot.services.dto.AuthorDto;
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.AuthorService;
@@ -19,7 +19,11 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**

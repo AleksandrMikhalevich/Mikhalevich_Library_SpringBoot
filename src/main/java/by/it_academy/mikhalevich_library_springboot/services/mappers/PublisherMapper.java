@@ -2,7 +2,9 @@ package by.it_academy.mikhalevich_library_springboot.services.mappers;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Publisher;
 import by.it_academy.mikhalevich_library_springboot.services.dto.PublisherDto;
-import org.mapstruct.*;
+import org.mapstruct.InheritInverseConfiguration;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 /**
  * @author Alex Mikhalevich

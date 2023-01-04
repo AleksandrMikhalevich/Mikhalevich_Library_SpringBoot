@@ -5,8 +5,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Date;
-
 /**
  * @author Alex Mikhalevich
  * @created 2022-07-09 16:14

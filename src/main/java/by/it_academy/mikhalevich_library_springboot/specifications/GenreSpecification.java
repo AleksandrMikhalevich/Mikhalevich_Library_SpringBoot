@@ -1,6 +1,9 @@
 package by.it_academy.mikhalevich_library_springboot.specifications;
 
-import by.it_academy.mikhalevich_library_springboot.entities.*;
+import by.it_academy.mikhalevich_library_springboot.entities.Book;
+import by.it_academy.mikhalevich_library_springboot.entities.Book_;
+import by.it_academy.mikhalevich_library_springboot.entities.Genre;
+import by.it_academy.mikhalevich_library_springboot.entities.Genre_;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -39,7 +42,7 @@ public class GenreSpecification {
             List<Predicate> predicatesMain = new ArrayList<>();
             if (bookTitle != null) {
                 query.distinct(true);
-                SetJoin<Genre, Book> inBooks= root.join(Genre_.books);
+                SetJoin<Genre, Book> inBooks = root.join(Genre_.books);
                 predicatesMain.add(criteriaBuilder.like(inBooks.get(Book_.title.getName()), "%" + bookTitle + "%"));
             }
             return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));

@@ -1,6 +1,11 @@
 package by.it_academy.mikhalevich_library_springboot.specifications;
 
-import by.it_academy.mikhalevich_library_springboot.entities.*;
+import by.it_academy.mikhalevich_library_springboot.entities.Author;
+import by.it_academy.mikhalevich_library_springboot.entities.Author_;
+import by.it_academy.mikhalevich_library_springboot.entities.Book;
+import by.it_academy.mikhalevich_library_springboot.entities.Book_;
+import by.it_academy.mikhalevich_library_springboot.entities.Publisher;
+import by.it_academy.mikhalevich_library_springboot.entities.Publisher_;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -71,7 +76,7 @@ public class AuthorSpecification {
             List<Predicate> predicatesMain = new ArrayList<>();
             if (publisherName != null) {
                 query.distinct(true);
-                SetJoin<Author, Publisher> inPublishers= root.join(Author_.publishers);
+                SetJoin<Author, Publisher> inPublishers = root.join(Author_.publishers);
                 predicatesMain.add(criteriaBuilder.like(inPublishers.get(Publisher_.name.getName()), "%" + publisherName + "%"));
             }
             return criteriaBuilder.and(predicatesMain.toArray(new Predicate[0]));

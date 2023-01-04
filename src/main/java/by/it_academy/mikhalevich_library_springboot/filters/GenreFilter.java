@@ -1,12 +1,9 @@
 package by.it_academy.mikhalevich_library_springboot.filters;
 
-import by.it_academy.mikhalevich_library_springboot.services.dto.GenreDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.Set;
 
 /**
  * @author Alex Mikhalevich

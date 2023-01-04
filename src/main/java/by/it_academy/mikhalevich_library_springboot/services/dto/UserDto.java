@@ -23,7 +23,7 @@ public class UserDto implements Serializable {
     @Transient
     private String passwordConfirm;
     @NotBlank(message = "Поле не должно быть пустым")
-    @Pattern(regexp = "^[\\w !#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
+    @Pattern(regexp = "^(?=.{6,64}$)(?![_!#$%&'*+/=?`{|}~^.-])+[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$",
             message = "Адрес электронной почты должен быть в формате example@example.com")
     private final String email;
     private final Set<RoleDto> roles;

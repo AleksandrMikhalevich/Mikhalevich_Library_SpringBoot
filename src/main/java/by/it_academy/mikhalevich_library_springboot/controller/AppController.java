@@ -1,15 +1,31 @@
 package by.it_academy.mikhalevich_library_springboot.controller;
 
-import by.it_academy.mikhalevich_library_springboot.filters.*;
-import by.it_academy.mikhalevich_library_springboot.services.dto.*;
+import by.it_academy.mikhalevich_library_springboot.filters.AuthorFilter;
+import by.it_academy.mikhalevich_library_springboot.filters.BookFilter;
+import by.it_academy.mikhalevich_library_springboot.filters.GenreFilter;
+import by.it_academy.mikhalevich_library_springboot.filters.PublisherFilter;
+import by.it_academy.mikhalevich_library_springboot.filters.UserFilter;
+import by.it_academy.mikhalevich_library_springboot.services.dto.AuthorDto;
+import by.it_academy.mikhalevich_library_springboot.services.dto.BookDto;
+import by.it_academy.mikhalevich_library_springboot.services.dto.GenreDto;
+import by.it_academy.mikhalevich_library_springboot.services.dto.PublisherDto;
+import by.it_academy.mikhalevich_library_springboot.services.dto.UserDto;
 import by.it_academy.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
-import by.it_academy.mikhalevich_library_springboot.services.interfaces.*;
+import by.it_academy.mikhalevich_library_springboot.services.interfaces.AuthorService;
+import by.it_academy.mikhalevich_library_springboot.services.interfaces.BookService;
+import by.it_academy.mikhalevich_library_springboot.services.interfaces.EmailService;
+import by.it_academy.mikhalevich_library_springboot.services.interfaces.GenreService;
+import by.it_academy.mikhalevich_library_springboot.services.interfaces.PublisherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;

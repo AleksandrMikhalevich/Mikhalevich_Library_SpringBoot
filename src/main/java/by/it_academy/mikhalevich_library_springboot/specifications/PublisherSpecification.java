@@ -1,6 +1,9 @@
 package by.it_academy.mikhalevich_library_springboot.specifications;
 
-import by.it_academy.mikhalevich_library_springboot.entities.*;
+import by.it_academy.mikhalevich_library_springboot.entities.Address;
+import by.it_academy.mikhalevich_library_springboot.entities.Address_;
+import by.it_academy.mikhalevich_library_springboot.entities.Publisher;
+import by.it_academy.mikhalevich_library_springboot.entities.Publisher_;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Join;

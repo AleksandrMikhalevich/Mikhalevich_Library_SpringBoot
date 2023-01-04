@@ -2,10 +2,7 @@ package by.it_academy.mikhalevich_library_springboot.services.mappers;
 
 import by.it_academy.mikhalevich_library_springboot.entities.Genre;
 import by.it_academy.mikhalevich_library_springboot.services.dto.GenreDto;
-import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
  * @author Alex Mikhalevich

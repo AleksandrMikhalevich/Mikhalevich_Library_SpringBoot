@@ -27,13 +27,12 @@ public class EmailServiceImpl implements EmailService {
             mailMessage.setFrom(sender);
             mailMessage.setTo(email);
             mailMessage.setText("Добрый день! Вы успешно зарегистрировались в интернет-библиотеке Bookаньеры." + "\n"
-            + "Ваш логин: " + login + "\n" + "Ваш пароль: " + password);
+                    + "Ваш логин: " + login + "\n" + "Ваш пароль: " + password);
             mailMessage.setSubject("Регистрация на Bookаньерах");
             javaMailSender.send(mailMessage);
             return "Письмо с данными о регистрации направлены на указанную при регистрации электронную почту." + "\n"
                     + "Теперь вы можете использовать эти данные для входа на сайт.";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return "Ошибка отправки письма!";
         }
     }
@@ -49,8 +48,7 @@ public class EmailServiceImpl implements EmailService {
             mailMessage.setSubject("Регистрация на Bookаньерах");
             javaMailSender.send(mailMessage);
             return "Письмо с обновленными данными профиля направлены на указанную вами электронную почту.";
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return "Ошибка отправки письма!";
         }
     }

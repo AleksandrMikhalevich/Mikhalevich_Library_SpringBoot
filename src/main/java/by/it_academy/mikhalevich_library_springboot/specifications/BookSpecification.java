@@ -1,9 +1,18 @@
 package by.it_academy.mikhalevich_library_springboot.specifications;
 
-import by.it_academy.mikhalevich_library_springboot.entities.*;
+import by.it_academy.mikhalevich_library_springboot.entities.Author;
+import by.it_academy.mikhalevich_library_springboot.entities.Author_;
+import by.it_academy.mikhalevich_library_springboot.entities.Book;
+import by.it_academy.mikhalevich_library_springboot.entities.Book_;
+import by.it_academy.mikhalevich_library_springboot.entities.Genre;
+import by.it_academy.mikhalevich_library_springboot.entities.Genre_;
+import by.it_academy.mikhalevich_library_springboot.entities.Publisher;
+import by.it_academy.mikhalevich_library_springboot.entities.Publisher_;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.SetJoin;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
