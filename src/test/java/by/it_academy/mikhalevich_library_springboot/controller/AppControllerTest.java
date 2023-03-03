@@ -10,6 +10,7 @@ import by.it_academy.mikhalevich_library_springboot.services.interfaces.GenreSer
 import by.it_academy.mikhalevich_library_springboot.services.interfaces.PublisherService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * @created 2022-09-10 13:39
  */
 @WebMvcTest(AppController.class)
+@AutoConfigureMockMvc(addFilters = false)
 class AppControllerTest {
 
     @Autowired
@@ -48,6 +50,7 @@ class AppControllerTest {
     private EmailService emailService;
 
     @Test
+    @WithMockUser(username = "admin", authorities = {"ADMIN"})
     void shouldShowMainPage() throws Exception {
         mockMvc
                 .perform(get("/index"))
