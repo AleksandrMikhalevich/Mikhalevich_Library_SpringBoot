@@ -88,7 +88,7 @@
                                 or ${bookFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
                          + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=id&sortDir=' + ${reverseSortDir}}">№</a>
                         </th:block>
                         <th:block
                                 th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
@@ -102,7 +102,7 @@
                                 or ${bookFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
                          + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=surname&sortDir=' + ${reverseSortDir}}">Фамилия</a>
                         </th:block>
                         <th:block
                                 th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
@@ -116,7 +116,7 @@
                                 or ${bookFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
                          + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=firstName&sortDir=' + ${reverseSortDir}}">Имя</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=firstName&sortDir=' + ${reverseSortDir}}">Имя</a>
                         </th:block>
                         <th:block
                                 th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
@@ -130,7 +130,7 @@
                                 or ${bookFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
                          + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=secondName&sortDir=' + ${reverseSortDir}}">Отчество</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=secondName&sortDir=' + ${reverseSortDir}}">Отчество</a>
                         </th:block>
                         <th:block
                                 th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
@@ -144,7 +144,7 @@
                                 or ${bookFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
                          + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=countrys&sortDir=' + ${reverseSortDir}}">Страна</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=country&sortDir=' + ${reverseSortDir}}">Страна</a>
                         </th:block>
                         <th:block
                                 th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}
@@ -158,7 +158,7 @@
                                 or ${bookFilter != null} or ${publisherFilter != null}">
                             <a th:href="@{'/authors/page/' + ${currentPage} + '?firstNameFilter=' + ${firstNameFilter} + '&secondNameFilter=' + ${secondNameFilter}
                          + '&surnameFilter=' + ${surnameFilter} + '&countryFilter=' + ${countryFilter} + '&bookFilter=' + ${bookFilter}
-                          + '&publisherFilter=' + ${publisherFilter} + '?pageSize=' + ${pageSize} + '&sortField=publishers.name&sortDir=' + ${reverseSortDir}}">Издательства</a>
+                          + '&publisherFilter=' + ${publisherFilter} + '&pageSize=' + ${pageSize} + '&sortField=publishers.name&sortDir=' + ${reverseSortDir}}">Издательства</a>
                         </th:block>
                         <th:block
                                 th:if="${firstNameFilter == null} or ${secondNameFilter == null} or ${surnameFilter == null} or ${countryFilter == null}

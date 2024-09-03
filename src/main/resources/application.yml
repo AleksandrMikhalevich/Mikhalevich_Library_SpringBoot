@@ -22,3 +22,5 @@ spring:
         smtp:
           auth:true
           starttls.enable
+server:
+  port: 8090

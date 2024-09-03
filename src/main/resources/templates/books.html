@@ -527,7 +527,7 @@
                  or ${authorFilter != null} or ${genreFilter != null} or ${publisherFilter != null} or ${fromDateFilter != null}
                   or ${toDateFilter != null} or ${fromYearFilter != null} or ${toYearFilter != null}">
             <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-        <a class="page-link" th:if="${i != currentPage}"
+        <a class="page-link" th:if="${i != currentPage} and ${i != 0}"
            th:href="@{'/books/page/' + ${i} + '?titleFilter=' + ${titleFilter} + '&languageFilter=' + ${languageFilter}
                          + '&summaryFilter=' + ${summaryFilter} + '&authorFilter=' + ${authorFilter} + '&genreFilter=' + ${genreFilter}
                           + '&publisherFilter=' + ${publisherFilter} + '&fromDateFilter=' + ${fromDateFilter} + '&toDateFilter='
@@ -543,7 +543,7 @@
                                 or ${fromDateFilter == null} or ${toDateFilter == null} or ${fromYearFilter == null}
                                 or ${toYearFilter == null}">
             <span th:each="i: ${#numbers.sequence(1, totalPages)}">
-        <a class="page-link" th:if="${i != currentPage}"
+        <a class="page-link" th:if="${i != currentPage} and ${i != 0}"
            th:href="@{'/books/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
         </a>
         <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
@@ -604,7 +604,14 @@
         </li>
     </ul>
     <div style="text-align: center;">
-        Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+        <th:block
+                th:if="${totalItems > 0} or ${totalPages > 0}">
+            Всего строк [[${totalItems}]] : Страница [[${currentPage}]] из [[${totalPages}]]
+        </th:block>
+        <th:block
+                th:if="${totalItems == 0} or ${totalPages == 0}">
+            Всего строк [[${totalItems}]] : Страница 1 из 1
+        </th:block>
     </div>
 </nav>
 <div class="wrapper flex-grow-1">

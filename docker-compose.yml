@@ -1,11 +1,12 @@
-version: '1.0'
+version: '3.9'
 services:
   db:
     image: mysql:8.0
     restart: unless-stopped
     environment:
-      MYSQL_DATABASE: library-db
+      MYSQL_DATABASE: library_db
       MYSQL_TCP_PORT: 3303
+      MYSQL_ROOT_PASSWORD: 1234
     ports:
       - "3303:3303"
     expose:

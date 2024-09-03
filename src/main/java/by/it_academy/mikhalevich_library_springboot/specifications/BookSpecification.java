@@ -24,6 +24,9 @@ import java.util.Objects;
  */
 public class BookSpecification {
 
+    private BookSpecification() {
+    }
+
     public static Specification<Book> getBookByTitleSpec(String title) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();

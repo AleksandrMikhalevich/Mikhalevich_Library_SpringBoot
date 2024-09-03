@@ -5,6 +5,10 @@ package by.it_academy.mikhalevich_library_springboot.constants;
  * @created 2022-07-25 12:46
  */
 public class Constants {
+
+    private Constants() {
+    }
+
     public static final String CURRENT_PAGE = "currentPage";
     public static final String PAGE_SIZE = "pageSize";
     public static final String SORT_FIELD = "sortField";
@@ -63,4 +67,11 @@ public class Constants {
     public static final String REGISTRATION_MESSAGE = "registrationMessage";
     public static final String ACCOUNT_ERROR = "accountError";
     public static final String UPDATE_ACCOUNT_MESSAGE = "updateAccountMessage";
+    public static final String INDEX_PAGE = "index";
+    public static final String USERS_PAGE = "users";
+    public static final String REGISTRATION_PAGE = "registration";
+    public static final String USER_ACCOUNT_PAGE = "user-account";
+    public static final String BOOKS_PAGE = "books";
+    public static final String ADD_BOOK_PAGE = "add-book";
+    public static final String UPDATE_BOOK_PAGE = "update-book";
 }
