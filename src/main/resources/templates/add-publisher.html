@@ -29,27 +29,27 @@
                     <span class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="countryInput" class="form-label">Описание</label>
+                    <label for="countryInput" class="form-label">Страна</label>
                     <input type="text" id="countryInput" name="country" th:field="*{addressCountry}" class="form-control" placeholder="Страна">
                     <span class="text-danger" th:if="${#fields.hasErrors('addressCountry')}" th:errors="*{addressCountry}"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="cityInput" class="form-label">Описание</label>
+                    <label for="cityInput" class="form-label">Город</label>
                     <input type="text" id="cityInput" name="city" th:field="*{addressCity}" class="form-control" placeholder="Город">
                     <span class="text-danger" th:if="${#fields.hasErrors('addressCity')}" th:errors="*{addressCity}"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="streetInput" class="form-label">Описание</label>
+                    <label for="streetInput" class="form-label">Улица</label>
                     <input type="text" id="streetInput" name="street" th:field="*{addressStreet}" class="form-control" placeholder="Улица">
                     <span class="text-danger" th:if="${#fields.hasErrors('addressStreet')}" th:errors="*{addressStreet}"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="houseInput" class="form-label">Описание</label>
+                    <label for="houseInput" class="form-label">Дом</label>
                     <input type="text" id="houseInput" name="house" th:field="*{addressHouse}" class="form-control" placeholder="Номер дома">
                     <span class="text-danger" th:if="${#fields.hasErrors('addressHouse')}" th:errors="*{addressHouse}"></span>
                 </div>
                 <div class="mb-3">
-                    <label for="zipcodeInput" class="form-label">Описание</label>
+                    <label for="zipcodeInput" class="form-label">Почтовый индекс</label>
                     <input type="text" id="zipcodeInput" name="zipcode" th:field="*{addressZipcode}" class="form-control" placeholder="Почтовый индекс">
                     <span class="text-danger" th:if="${#fields.hasErrors('addressZipcode')}" th:errors="*{addressZipcode}"></span>
                 </div>
