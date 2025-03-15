@@ -19,6 +19,9 @@ import java.util.List;
  */
 public class AuthorSpecification {
 
+    private AuthorSpecification() {
+    }
+
     public static Specification<Author> getAuthorByFirstNameSpec(String firstName) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();

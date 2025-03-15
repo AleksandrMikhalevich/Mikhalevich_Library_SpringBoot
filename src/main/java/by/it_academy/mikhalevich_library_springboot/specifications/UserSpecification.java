@@ -14,6 +14,9 @@ import java.util.List;
  */
 public class UserSpecification {
 
+    private UserSpecification() {
+    }
+
     public static Specification<User> getUserByLoginSpec(String login) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();

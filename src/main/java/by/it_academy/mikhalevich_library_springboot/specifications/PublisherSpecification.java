@@ -17,6 +17,9 @@ import java.util.List;
  */
 public class PublisherSpecification {
 
+    private PublisherSpecification() {
+    }
+
     public static Specification<Publisher> getPublisherByNameSpec(String name) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();

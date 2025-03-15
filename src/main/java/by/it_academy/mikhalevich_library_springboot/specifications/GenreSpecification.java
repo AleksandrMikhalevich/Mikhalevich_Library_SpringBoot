@@ -17,6 +17,9 @@ import java.util.List;
  */
 public class GenreSpecification {
 
+    private GenreSpecification() {
+    }
+
     public static Specification<Genre> getGenreByNameSpec(String name) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicatesMain = new ArrayList<>();
