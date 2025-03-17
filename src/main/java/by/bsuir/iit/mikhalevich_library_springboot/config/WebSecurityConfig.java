@@ -1,6 +1,6 @@
 package by.bsuir.iit.mikhalevich_library_springboot.config;
 
-import by.bsuir.iit.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
+import by.bsuir.iit.mikhalevich_library_springboot.service.impl.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

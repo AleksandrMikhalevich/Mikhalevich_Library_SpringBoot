@@ -1,13 +1,13 @@
 package by.bsuir.iit.mikhalevich_library_springboot.controller;
 
-import by.bsuir.iit.mikhalevich_library_springboot.filters.UserFilter;
-import by.bsuir.iit.mikhalevich_library_springboot.services.dto.UserDto;
-import by.bsuir.iit.mikhalevich_library_springboot.services.impl.UserDetailsServiceImpl;
-import by.bsuir.iit.mikhalevich_library_springboot.services.interfaces.AuthorService;
-import by.bsuir.iit.mikhalevich_library_springboot.services.interfaces.BookService;
-import by.bsuir.iit.mikhalevich_library_springboot.services.interfaces.EmailService;
-import by.bsuir.iit.mikhalevich_library_springboot.services.interfaces.GenreService;
-import by.bsuir.iit.mikhalevich_library_springboot.services.interfaces.PublisherService;
+import by.bsuir.iit.mikhalevich_library_springboot.filter.UserFilter;
+import by.bsuir.iit.mikhalevich_library_springboot.service.dto.UserDto;
+import by.bsuir.iit.mikhalevich_library_springboot.service.impl.UserDetailsServiceImpl;
+import by.bsuir.iit.mikhalevich_library_springboot.service.interf.AuthorService;
+import by.bsuir.iit.mikhalevich_library_springboot.service.interf.BookService;
+import by.bsuir.iit.mikhalevich_library_springboot.service.interf.EmailService;
+import by.bsuir.iit.mikhalevich_library_springboot.service.interf.GenreService;
+import by.bsuir.iit.mikhalevich_library_springboot.service.interf.PublisherService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

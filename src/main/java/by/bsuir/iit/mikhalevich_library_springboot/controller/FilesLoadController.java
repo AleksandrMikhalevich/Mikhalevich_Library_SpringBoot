@@ -1,8 +1,8 @@
 package by.bsuir.iit.mikhalevich_library_springboot.controller;
 
 import by.bsuir.iit.mikhalevich_library_springboot.payload.UploadFileResponse;
-import by.bsuir.iit.mikhalevich_library_springboot.services.dto.DBFileDto;
-import by.bsuir.iit.mikhalevich_library_springboot.services.interfaces.FileStorageService;
+import by.bsuir.iit.mikhalevich_library_springboot.service.dto.DBFileDto;
+import by.bsuir.iit.mikhalevich_library_springboot.service.interf.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
