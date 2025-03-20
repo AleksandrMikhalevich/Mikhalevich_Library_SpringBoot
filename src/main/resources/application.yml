@@ -1,6 +1,8 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3303/library_db
+    url: ${DATABASE_URL}
+    username: ${DATABASE_USERNAME}
+    password: ${DATABASE_PASSWORD}
   jpa:
     open-in-view: true
     hibernate:
@@ -17,6 +19,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
+    username: ${EMAIL_SENDER}
+    password: ${EMAIL_PASSWORD}
     protocol: smtp
     properties.mail.smtp:
       auth: true
