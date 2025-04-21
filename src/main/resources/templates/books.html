@@ -22,7 +22,7 @@
 </div>
 <div class="collapsing" id="collapseFilters">
     <div class="card card-body">
-        <form class="row g-3" th:action="@{'/books/page/' + ${currentPage}}">
+        <form class="row g-3" th:action="@{'/books/page/' + ${1}}">
             <div class="col-md-4 mb-3">
                 <label for="titleFilterInput" class="form-label">По названию:</label>
                 <input type="text" id="titleFilterInput" name="titleFilter" class="form-control"
@@ -293,7 +293,7 @@
                     <td th:text="${book.summary}"></td>
                     <td>
                         <th:block th:each="author : ${book.authors}">
-                            <div th:text="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName}">
+                            <div th:text="${author.surname} + ', ' + ${author.firstName} + ' ' + ${author.secondName != null ? author.secondName : ''}">
                             </div>
                         </th:block>
                     </td>

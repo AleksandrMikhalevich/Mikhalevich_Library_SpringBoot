@@ -22,7 +22,7 @@
 </div>
 <div class="collapsing" id="collapseFilters">
     <div class="card card-body">
-        <form class="row g-3" th:action="@{'/publishers/page/' + ${currentPage}}">
+        <form class="row g-3" th:action="@{'/publishers/page/' + ${1}}">
             <div class="col-md-4 mb-3">
                 <label for="nameFilterInput" class="form-label">По названию:</label>
                 <input type="text" id="nameFilterInput" name="nameFilter" class="form-control"
@@ -205,12 +205,12 @@
                                 Удалить
                             </button>
                             <div class="modal modal-delete" th:id="deletePublisherModal + ${publisher.id}" tabindex="-1"
-                                 aria-labelledby="deleteBookLabel"
+                                 aria-labelledby="deletePublisherLabel"
                                  aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteGenreLabel">Подтверждение удаления
+                                            <h5 class="modal-title" id="deletePublisherLabel">Подтверждение удаления
                                                 издательства</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                     aria-label="Закрыть"></button>
@@ -320,7 +320,7 @@
             <th:block th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
                             or ${houseFilter != null} or ${zipcodeFilter != null}">
                 <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/genres/page/'+ ${1} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                   th:href="@{'/publishers/page/'+ ${1} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
                          + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
                          + '&zipcodeFilter=' + ${zipcodeFilter} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
                 </a>
@@ -329,7 +329,7 @@
             <th:block th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
                             or ${houseFilter == null} or ${zipcodeFilter == null}">
                 <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/genres/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
+                   th:href="@{'/publishers/page/'+ ${1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
                 </a>
                 <span class="page-link disabled" th:unless="${currentPage > 1}">Первая</span>
             </th:block>
@@ -338,7 +338,7 @@
             <th:block th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
                             or ${houseFilter != null} or ${zipcodeFilter != null}">
                 <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/genres/page/'+ ${currentPage - 1} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                   th:href="@{'/publishers/page/'+ ${currentPage - 1} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
                          + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
                          + '&zipcodeFilter=' + ${zipcodeFilter} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Первая
                 </a>
@@ -347,7 +347,7 @@
             <th:block th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
                             or ${houseFilter == null} or ${zipcodeFilter == null}">
                 <a class="page-link" th:if="${currentPage > 1}"
-                   th:href="@{'/genres/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                   th:href="@{'/publishers/page/' + ${currentPage - 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
                 <span class="page-link disabled" th:unless="${currentPage > 1}">&laquo;</span>
@@ -358,7 +358,7 @@
                             or ${houseFilter != null} or ${zipcodeFilter != null}">
                 <span th:each="i: ${#numbers.sequence(1, totalPages)}">
         <a class="page-link" th:if="${i != currentPage}"
-           th:href="@{'/genres/page/' + ${i} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+           th:href="@{'/publishers/page/' + ${i} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
                          + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
                          + '&zipcodeFilter=' + ${zipcodeFilter} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
         </a>
@@ -369,7 +369,7 @@
                             or ${houseFilter == null} or ${zipcodeFilter == null}">
                 <span th:each="i: ${#numbers.sequence(1, totalPages)}">
         <a class="page-link" th:if="${i != currentPage}"
-           th:href="@{'/genres/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
+           th:href="@{'/publishers/page/' + ${i} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]
         </a>
         <span class="page-link active" th:unless="${i != currentPage}">[[${i}]]</span>
         </span>
@@ -379,7 +379,7 @@
             <th:block th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
                             or ${houseFilter != null} or ${zipcodeFilter != null}">
                 <a class="page-link" th:if="${currentPage < totalPages}"
-                   th:href="@{'/genres/page/' + ${currentPage + 1} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                   th:href="@{'/publishers/page/' + ${currentPage + 1} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
                          + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
                          + '&zipcodeFilter=' + ${zipcodeFilter} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
                     <span aria-hidden="true">&raquo;</span>
@@ -389,7 +389,7 @@
             <th:block th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
                             or ${houseFilter == null} or ${zipcodeFilter == null}">
                 <a class="page-link" th:if="${currentPage < totalPages}"
-                   th:href="@{'/genres/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
+                   th:href="@{'/publishers/page/' + ${currentPage + 1} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
                 <span class="page-link disabled" th:unless="${currentPage < totalPages}">&raquo;</span>
@@ -399,7 +399,7 @@
             <th:block th:if="${nameFilter != null} or ${countryFilter != null} or ${cityFilter != null} or ${streetFilter != null}
                             or ${houseFilter != null} or ${zipcodeFilter != null}">
                 <a class="page-link" th:if="${currentPage < totalPages}"
-                   th:href="@{'/genres/page/' + ${totalPages} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
+                   th:href="@{'/publishers/page/' + ${totalPages} + '?nameFilter=' + ${nameFilter} + '&countryFilter=' + ${countryFilter}
                          + '&cityFilter=' + ${cityFilter} + '&streetFilter=' + ${streetFilter} + '&houseFilter=' + ${houseFilter}
                          + '&zipcodeFilter=' + ${zipcodeFilter} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
                 </a>
@@ -408,7 +408,7 @@
             <th:block th:if="${nameFilter == null} or ${countryFilter == null} or ${cityFilter == null} or ${streetFilter == null}
                             or ${houseFilter == null} or ${zipcodeFilter == null}">
                 <a class="page-link" th:if="${currentPage < totalPages}"
-                   th:href="@{'/genres/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
+                   th:href="@{'/publishers/page/' + ${totalPages} + '?pageSize=' + ${pageSize} + '&sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">Последняя
                 </a>
                 <span class="page-link disabled" th:unless="${currentPage < totalPages}">Последняя</span>
             </th:block>
