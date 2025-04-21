@@ -29,7 +29,7 @@ public class WebSecurityConfig {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/login", "/", "/index", "/books", "/books/page/*", "/authors", "/authors/page/*",
-                        "/genres", "/genres/page/*", "/img/logo.jpg").permitAll()
+                        "/genres", "/genres/page/*", "/img/logo.jpg", "/css/**", "/js/**").permitAll()
                 .antMatchers("/registration").not().fullyAuthenticated()
                 .antMatchers("/users", "/users/page/*", "/books/new-book", "/books/new-book/**", "/books/edit-book",
                         "/books/edit-book/**", "/books/page/*/*", "/authors/new-author", "/authors/new-author/**",
